@@ -7,7 +7,7 @@
 	<artifactId>exam.simulator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Java EE 6 webapp project</name>
+	<name>Exam Simulator</name>
 	<description>A starter Java EE 6 webapp project for use on JBoss AS 7.1 / EAP 6, generated from the jboss-javaee6-webapp archetype</description>
 
 	<properties>
