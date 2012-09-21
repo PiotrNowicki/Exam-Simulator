@@ -1,0 +1,50 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Piotr Nowicki's Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="main.css" />
+</h:head>
+
+<h:body>
+	<ui:param name="question" value="#{questionsViewer.getQuestionById('#{param.q}')}" />
+##{question.number} <h:outputText value="#{question.summary}"
+		escape="false" />
+	<br /><ui:repeat var="q" value="#{questionsViewer.allQuestions()}">
+	<h:link value="##{q.number} - #{q.summary}" outcome="viewQuestion.xhtml?q=#{q.number}" /><br /> 
+	</ui:repeat>
+	<p><h:outputText value="#{question.content}" escape="false"/></p>
+
+      Answers:
+      <ol>
+		<ui:repeat var="answer" value="#{question.answers}">
+			<li><h:outputText value="#{answer.content}" escape="false" /></li>
+		</ui:repeat>
+	</ol>
+
+	<h:button id="answerButton" value="Show answer" onclick="hideShow('explanaition'); return false;" />
+
+	<div>
+		<h:outputText id="explanaition" value="#{question.explanaition}"
+			style="display: none;" escape="false" />
+	</div>
+
+
+	<script type="text/javascript">
+    	function hideShow() {
+			var element = document.getElementById("explanaition");
+			var answerButton = document.getElementById("answerButton");
+			
+			if(element.style.display == "none") {
+				element.style.display = "block";
+				answerButton.value = "Hide answer";
+			} else {
+				element.style.display = "none";
+				answerButton.value = "Show answer";
+			}
+		}
+    </script>
+
+</h:body>
+</html>
