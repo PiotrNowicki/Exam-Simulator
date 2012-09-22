@@ -5,17 +5,27 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 @Entity
+@NamedQuery(name = Question.READ_ALL, query="SELECT q FROM Question q ORDER BY q.number")
 public class Question implements Serializable {
+
+	public final static String READ_ALL = "Question.ReadAll";
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,12 +43,14 @@ public class Question implements Serializable {
 
 	@NotNull
 	@Size(min=1)
+	@Column(length=16000)
 	private String content;
 
+	@Column(length=16000)
 	private String explanaition;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@OrderColumn
+	@OrderColumn(updatable=false)
 	private List<Answer> answers = new LinkedList<>();
 
 	public Question() {
@@ -98,5 +110,48 @@ public class Question implements Serializable {
 		for (Answer answer : answers) {
 			this.answers.add(answer);
 		}
+	}
+	
+	@Override
+	public int hashCode() {
+		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+
+		hashCodeBuilder.append(id);
+		hashCodeBuilder.append(number);
+		hashCodeBuilder.append(summary);
+
+		return hashCodeBuilder.toHashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (obj == null) {
+			return false;
+		}
+
+		if (!(obj instanceof Question)) {
+			return false;
+		}
+
+		Question other = (Question) obj;
+		EqualsBuilder equalsBuilder = new EqualsBuilder();
+		
+		equalsBuilder.append(number, other.number);
+		equalsBuilder.append(summary, other.summary);
+	
+		return equalsBuilder.isEquals();
+	}
+	
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		builder.append("id", id);
+		builder.append("number", number);
+		builder.append("summary", summary);
+		return builder.toString();
 	}
 }

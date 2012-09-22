@@ -2,11 +2,14 @@ package com.piotrnowicki.exam.simulator.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 @Entity
 public class Answer implements Serializable {
@@ -18,20 +21,27 @@ public class Answer implements Serializable {
 	private Long id;
 
 	@NotNull
-	private Boolean isCorrect;
-
-	@NotNull
-	@Size(min=1)
+	@Column(length=16000)
 	private String content;
 
+	@Column(length=16000)
 	private String explanaition;
 
 	public Answer() {
 	}
 
-	public Answer(String content, Boolean isCorrect) {
+	public Answer(String content) {
 		this.content = content;
-		this.isCorrect = isCorrect;
+	}
+
+	@Override
+	public String toString() {
+		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		
+		builder.append("id", id);
+		builder.append("content", content);
+		
+		return builder.toString();
 	}
 
 	public String getContent() {
@@ -40,14 +50,6 @@ public class Answer implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public Boolean getIsCorrect() {
-		return isCorrect;
-	}
-
-	public void setIsCorrect(Boolean isCorrect) {
-		this.isCorrect = isCorrect;
 	}
 
 	public String getExplanaition() {
@@ -61,5 +63,4 @@ public class Answer implements Serializable {
 	public Long getId() {
 		return id;
 	}
-
 }

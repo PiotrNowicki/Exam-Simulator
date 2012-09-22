@@ -3,18 +3,33 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Piotr Nowicki's Exam Simulator</title>
+	<title>Awake Technologies - Exam Simulator</title>
 	<link rel="stylesheet" type="text/css" href="main.css" />
 </h:head>
 
+<f:metadata>
+	<f:viewParam name="q" value="#{questionViewer.questionNumber}" />
+	<f:event listener="#{questionViewer.loadQuestion()}"
+		type="preRenderView"/>
+</f:metadata>
+
 <h:body>
-	<ui:param name="question" value="#{questionsViewer.getQuestionById('#{param.q}')}" />
+	<h:link value="Main page" outcome="index"/>
+	<ui:param name="question" value="#{questionViewer.question}" />
+	
 ##{question.number} <h:outputText value="#{question.summary}"
 		escape="false" />
-	<br /><ui:repeat var="q" value="#{questionsViewer.allQuestions()}">
-	<h:link value="##{q.number} - #{q.summary}" outcome="viewQuestion.xhtml?q=#{q.number}" /><br /> 
-	</ui:repeat>
-	<p><h:outputText value="#{question.content}" escape="false"/></p>
+	<br />
+	
+	<h:link value="&lt; Previous" outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}" rendered="#{not empty questionViewer.previousQuestionNumber}"/>
+	<h:link value="Next &gt;" outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}" rendered="#{not empty questionViewer.nextQuestionNumber}"/>
+	
+	<h:selectOneMenu id="selectQuestion" title="sss" value="#{questionViewer.questionNumber}" onchange="window.location='?q=' + this.options[this.selectedIndex].value">
+		<f:selectItems value="#{questionViewer.allQuestions().values()}" var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}" itemValue="#{currQ.number}"  />
+		
+	</h:selectOneMenu>
+	
+	<p><h:outputText value="#{questionViewer.markdownify(question.content)}" escape="false"/></p>
 
       Answers:
       <ol>
@@ -23,28 +38,17 @@
 		</ui:repeat>
 	</ol>
 
-	<h:button id="answerButton" value="Show answer" onclick="hideShow('explanaition'); return false;" />
+<h:form prependId="false">
 
+	<h:commandButton value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Show answer'}" >
+		<f:ajax listener="#{questionViewer.toggleExplanaition()}" render="@form" />
+	</h:commandButton>
+	
 	<div>
-		<h:outputText id="explanaition" value="#{question.explanaition}"
-			style="display: none;" escape="false" />
+		<h:outputText id="explanaition" value="#{questionViewer.markdownify(question.explanaition)}"
+				rendered="#{questionViewer.showExplanaition}" escape="false" />
 	</div>
-
-
-	<script type="text/javascript">
-    	function hideShow() {
-			var element = document.getElementById("explanaition");
-			var answerButton = document.getElementById("answerButton");
-			
-			if(element.style.display == "none") {
-				element.style.display = "block";
-				answerButton.value = "Hide answer";
-			} else {
-				element.style.display = "none";
-				answerButton.value = "Show answer";
-			}
-		}
-    </script>
+</h:form>
 
 </h:body>
 </html>

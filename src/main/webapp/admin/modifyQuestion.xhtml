@@ -1,0 +1,62 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Awake Technologies - Exam Simulator - Admin</title>
+	<link rel="stylesheet" type="text/css" href="main.css" />
+</h:head>
+
+<f:metadata>
+	<f:viewParam name="q" value="#{questionModifier.questionId}" />
+	<f:event
+		listener="#{questionModifier.loadQuestion(questionModifier.questionId)}"
+		type="preRenderView" />
+</f:metadata>
+
+<h:body>
+
+	<h:link value="Main page" outcome="index" />
+	<ui:param name="question" value="#{questionModifier.question}" />
+
+	<h:form prependId="false" id="modifyQuestionForm">
+
+		<h:outputLabel for="selectQuestion" value="Choose question" />
+		<h:selectOneMenu id="selectQuestion"
+			value="#{questionModifier.questionId}"
+			onchange="window.location='?q=' + this.options[this.selectedIndex].value">
+			<f:selectItems value="#{questionModifier.allQuestions()}" var="currQ"
+				itemLabel="#{currQ.number} - #{currQ.summary}"
+				itemValue="#{currQ.id}" />
+		</h:selectOneMenu>
+
+
+		<h:outputLabel for="selectQuestion" value="Number" />
+		<h:inputText id="questionNumber" label="Number"
+			value="#{question.number}" />
+
+		<h:outputLabel for="selectQuestion" value="Summary" />
+		<h:inputText id="questionSummary" label="Summary"
+			value="#{question.summary}" />
+
+		<h:outputLabel for="questionContent" value="Content" />
+		<h:inputTextarea id="questionContent" label="Content"
+			value="#{question.content}" />
+
+		<h:outputLabel for="questionExplanaition" value="Explanaition" />
+		<h:inputTextarea id="questionExplanaition" label="Explanaition"
+			value="#{question.explanaition}" />
+
+		<h:outputLabel for="questionAnswers" value="Answers" />
+
+		<ui:repeat id="questionAnswers" var="answer"
+			value="#{question.answers}">
+			<h:inputTextarea value="#{answer.content}" />
+		</ui:repeat>
+		<h:commandButton value="Submit" action="#{questionModifier.update()}" />
+		<h:commandButton value="Remove" action="#{questionModifier.delete()}" />
+
+	</h:form>
+
+</h:body>
+</html>
