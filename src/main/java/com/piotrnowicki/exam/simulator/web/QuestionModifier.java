@@ -3,12 +3,14 @@ package com.piotrnowicki.exam.simulator.web;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import com.piotrnowicki.exam.simulator.boundary.QuestionsManager;
 import com.piotrnowicki.exam.simulator.entity.Answer;
@@ -25,6 +27,11 @@ public class QuestionModifier implements Serializable {
 
 	@Inject
 	FacesContext ctx;
+	
+	@Inject
+	Logger log;
+
+	private static final Integer NUMBER_OF_QUESTIONS = 8;
 
 	private Question question;
 
@@ -51,7 +58,7 @@ public class QuestionModifier implements Serializable {
 	}
 
 	public void loadAnswers() {
-		while (question.getAnswers().size() < 6) {
+		while (question.getAnswers().size() < NUMBER_OF_QUESTIONS) {
 			question.addAnswers(new Answer());
 		}
 	}
@@ -61,7 +68,7 @@ public class QuestionModifier implements Serializable {
 		if (!ctx.isPostback()) {
 			question = new Question();
 
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < NUMBER_OF_QUESTIONS; i++) {
 				question.addAnswers(new Answer());
 			}
 		}
@@ -92,8 +99,9 @@ public class QuestionModifier implements Serializable {
 			return null;
 		} else {
 			qManager.createQuestion(question);
-			
-			String url = "modifyQuestion.xhtml?faces-redirect=true&q=" + question.getId();
+
+			String url = "modifyQuestion.xhtml?faces-redirect=true&q="
+					+ question.getId();
 			return url;
 		}
 
@@ -115,5 +123,13 @@ public class QuestionModifier implements Serializable {
 				it.remove();
 			}
 		}
+	}
+
+	public String logout() {
+		log.info("Logging out user");
+		
+		ctx.getExternalContext().invalidateSession();
+
+		return "index?faces-redirect=true";
 	}
 }

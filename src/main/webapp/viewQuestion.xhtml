@@ -69,15 +69,17 @@
 				<h:outputText value="#{questionViewer.markdownify(question.content)}" escape="false"/>
 			</p>
 
-	      	<ol style="padding-top: 15pt;">
+		    <ul class="nav nav-list">
+		    	<li class="divider"></li>
+		    </ul>
+
+	      	<ol style="padding-top: 10pt;">
 				<ui:repeat var="answer" value="#{question.answers}">
 					<li><h:outputText value="#{answer.content}" escape="false" /></li>
 				</ui:repeat>
 			</ol>
 	
 			<h:form prependId="false">
-	
-				
 				<h:commandButton style="margin: 10pt 0;" value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Show answer'}"  styleClass="btn btn-primary">
 					<f:ajax listener="#{questionViewer.toggleExplanaition()}" render="@form" />
 				</h:commandButton>
@@ -86,14 +88,10 @@
 					<h:outputText value="#{questionViewer.markdownify(question.explanaition)}"
 							escape="false"/>
 				</h:panelGroup>
-				
 			</h:form>
-    
     	</div>
     </div>
-    
 
-		
 	</div>
 </h:body>
 

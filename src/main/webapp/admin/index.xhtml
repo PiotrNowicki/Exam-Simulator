@@ -10,6 +10,11 @@
 
 <h:body>
 	<h:link outcome="modifyQuestion" value="Read / Update / Remove questions" /> <br />
-	<h:link outcome="createQuestion" value="Create question" />
+	<h:link outcome="createQuestion" value="Create question" /> <br />
+	
+	<h:form>
+	<h:commandLink value="Logout" action="#{questionModifier.logout}" />
+	</h:form>
+	
 </h:body>
 </html>

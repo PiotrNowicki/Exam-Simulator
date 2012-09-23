@@ -35,15 +35,27 @@ public class Initializer {
 		
 		em.persist(q);
 		
-		Answer aa1 = new Answer("Content of answer 111");
-		Answer aa2 = new Answer("Content of answer 222");
-		Answer aa3 = new Answer("Content of answer 333");
 		
-		Question qq = new Question("Q02", "Another part of the question", "Blah blah blah");
-		qq.addAnswers(aa1, aa2, aa3);
 		
-		qq.setExplanaition("Explanaition 2");
+		
+		Answer aa1 = new Answer("[q1, q2]");
+		Answer aa2 = new Answer("[q3]");
+		Answer aa3 = new Answer("[q2]");
+		Answer aa4 = new Answer("[q1]");
+		Answer aa5 = new Answer("[q1, q2, q3]");
+		Answer aa6 = new Answer("[q3, q2, q1]");
+		Answer aa7 = new Answer("[null]");
+		Answer aa8 = new Answer("the above code doesn’t compile");
+
+		Question qq = new Question("Q02", "Same GET request parameter behavior", "Considering the following HTML form code snippet and the servlet code, what will be the result of servlet invocation after the form has been submitted?<br />`<!-- form.html --> <br /><form action=\"myServlet?var=q1&var=q2\" method=\"POST\"><input name=\"var\" type=\"hidden\" value=\"q3\" /><input type=\"submit\" /></form>` <p>`package com.nullhaus; import javax.servlet.annotation.*;`</p>");
+		qq.addAnswers(aa1, aa2, aa3, aa4, aa5, aa6, aa7, aa8);
+		
+		qq.setExplanaition("Reference: page 22, 3.1 “HTTP Protocol Parameters” Explanation: When the same variable name exists in the query string, as well as in the POST body, the resulting parameter values list will consists of the query string values, followed by the POST data. TheHttpServletRequest#getParameter(-) returns only the first parameter value.");
 		em.persist(qq);
+		
+		
+		
+		
 		
 		Answer aaa1 = new Answer("Content of answer xxxx1");
 		Answer aaa2 = new Answer("Content of answer xxxx2");

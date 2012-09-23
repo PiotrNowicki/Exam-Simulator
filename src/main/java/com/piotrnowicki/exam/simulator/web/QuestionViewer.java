@@ -2,6 +2,7 @@ package com.piotrnowicki.exam.simulator.web;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -23,22 +24,27 @@ public class QuestionViewer implements Serializable {
 	private String questionNumber;
 
 	private Question question;
-	
+
 	private String previousQuestionNumber;
-	
+
 	private String nextQuestionNumber;
 
 	private boolean showExplanaition;
 
-
 	public void loadQuestion() {
-		if (questionNumber == null || questionNumber.isEmpty()) {
-			questionNumber = questionsReader.getQuestions().firstKey();
+		NavigableMap<String, Question> allQuestions = questionsReader
+				.getQuestions();
+
+		boolean questionExists = (questionNumber != null)
+				&& allQuestions.containsKey(questionNumber);
+
+		if (!questionExists) {
+			questionNumber = allQuestions.firstKey();
 		}
-		
+
 		this.question = questionsReader.getQuestionById(questionNumber);
-		this.nextQuestionNumber = questionsReader.getQuestions().higherKey(questionNumber);
-		this.previousQuestionNumber = questionsReader.getQuestions().lowerKey(questionNumber);
+		this.nextQuestionNumber = allQuestions.higherKey(questionNumber);
+		this.previousQuestionNumber = allQuestions.lowerKey(questionNumber);
 	}
 
 	public Map<String, Question> allQuestions() {
@@ -52,7 +58,7 @@ public class QuestionViewer implements Serializable {
 	public void toggleExplanaition() {
 		showExplanaition = !showExplanaition;
 	}
-	
+
 	public Question getQuestion() {
 		return question;
 	}

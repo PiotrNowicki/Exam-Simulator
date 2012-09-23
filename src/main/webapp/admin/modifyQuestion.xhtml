@@ -34,30 +34,36 @@
 
 
 		<h:outputLabel for="selectQuestion" value="Number" />
-		<h:inputText id="questionNumber" label="Number"
+		<h:inputText id="questionNumber" style="height: 25px;" styleClass="input-small" label="Number"
 			value="#{question.number}" />
 
 		<h:outputLabel for="selectQuestion" value="Summary" />
-		<h:inputText id="questionSummary" label="Summary"
+		<h:inputText id="questionSummary" style="height: 25px;" styleClass="input-xxlarge" label="Summary"
 			value="#{question.summary}" />
 
 		<h:outputLabel for="questionContent" value="Content" />
-		<h:inputTextarea id="questionContent" label="Content"
+		<h:inputTextarea id="questionContent" label="Content" styleClass="input-xxlarge" rows="6" 
 			value="#{question.content}" />
 
 		<h:outputLabel for="questionExplanaition" value="Explanaition" />
-		<h:inputTextarea id="questionExplanaition" label="Explanaition"
+		<h:inputTextarea id="questionExplanaition" label="Explanaition" styleClass="input-xxlarge" rows="6" 
 			value="#{question.explanaition}" />
 
 		<h:outputLabel for="questionAnswers" value="Answers" />
 
-		<ui:repeat id="questionAnswers" var="answer"
-			value="#{question.answers}">
-			<h:inputTextarea value="#{answer.content}" />
-		</ui:repeat>
-		<h:commandButton value="Submit" action="#{questionModifier.update()}" />
-		<h:commandButton value="Remove" action="#{questionModifier.delete()}" />
-
+		<ol>
+			<ui:repeat id="questionAnswers" var="answer" value="#{question.answers}">
+				<li>
+					<h:inputTextarea value="#{answer.content}" styleClass="input-xxlarge" rows="2" /><br />
+				</li>
+			</ui:repeat>
+		</ol>
+		
+		<div>
+			<h:commandButton value="Submit" style="margin-right: 10pt;" styleClass="btn btn-primary" action="#{questionModifier.update()}" />
+			<h:commandButton value="Remove" styleClass="btn" action="#{questionModifier.delete()}" />
+		</div>
+		
 	</h:form>
 </div>
 </h:body>
