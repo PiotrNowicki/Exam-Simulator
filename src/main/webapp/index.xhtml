@@ -3,12 +3,41 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Awake Technologies - Exam Simulator</title>
-	<link rel="stylesheet" type="text/css" href="main.css" />
+	<title>Awake Technologies Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="resources/main.css" />
+	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
 </h:head>
 
 <h:body>
-	<h1>Mock Exam</h1>
-	<h:link outcome="viewQuestion?q=Q01" value="View questions" />
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Exam Simulator</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><h:link value="Questions" outcome="viewQuestion"/></li>
+              <li><a href="http://www.piotrnowicki.com">PiotrNowicki.com</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+    	<h1>Welcome</h1>
+      <p><h:link outcome="viewQuestion?q=Q01" value="View questions" /></p>
+    
+    	<h1>About</h1>
+      <p>blah blah blah</p>
+    </div> 
+
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="resources/js/bootstrap.min.js"></script>
 </h:body>
 </html>

@@ -32,6 +32,10 @@ public class QuestionViewer implements Serializable {
 
 
 	public void loadQuestion() {
+		if (questionNumber == null || questionNumber.isEmpty()) {
+			questionNumber = questionsReader.getQuestions().firstKey();
+		}
+		
 		this.question = questionsReader.getQuestionById(questionNumber);
 		this.nextQuestionNumber = questionsReader.getQuestions().higherKey(questionNumber);
 		this.previousQuestionNumber = questionsReader.getQuestions().lowerKey(questionNumber);

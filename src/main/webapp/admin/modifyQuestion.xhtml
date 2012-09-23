@@ -3,8 +3,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>Awake Technologies - Exam Simulator - Admin</title>
-	<link rel="stylesheet" type="text/css" href="main.css" />
+	<title>Awake Technologies Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="../resources/main.css" />
+	<link href="../resources/css/bootstrap.min.css" rel="stylesheet" />
 </h:head>
 
 <f:metadata>
@@ -15,6 +16,7 @@
 </f:metadata>
 
 <h:body>
+    <div class="container">
 
 	<h:link value="Main page" outcome="index" />
 	<ui:param name="question" value="#{questionModifier.question}" />
@@ -57,6 +59,6 @@
 		<h:commandButton value="Remove" action="#{questionModifier.delete()}" />
 
 	</h:form>
-
+</div>
 </h:body>
 </html>
