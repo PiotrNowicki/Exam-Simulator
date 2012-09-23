@@ -1,0 +1,20 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Awake Technologies Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="../resources/main.css" />
+	<link href="../resources/css/bootstrap.min.css" rel="stylesheet" />
+</h:head>
+
+<h:body>
+	<h:link outcome="modifyQuestion" value="Read / Update / Remove questions" /> <br />
+	<h:link outcome="createQuestion" value="Create question" /> <br />
+	
+	<h:form>
+	<h:commandLink value="Logout" action="#{questionModifier.logout}" />
+	</h:form>
+	
+</h:body>
+</html>

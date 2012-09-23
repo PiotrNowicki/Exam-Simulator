@@ -1,0 +1,57 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Awake Technologies Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="../resources/main.css" />
+	<link href="../resources/css/bootstrap.min.css" rel="stylesheet" />
+</h:head>
+
+<f:event listener="#{questionModifier.initCreation}"
+	type="preRenderView" />
+
+
+<h:body>
+    <div class="container">
+
+	<h:link value="Main page" outcome="index" />
+	<ui:param name="question" value="#{questionModifier.question}" />
+
+	<h:form prependId="false" id="createQuestionForm">
+
+		<h:outputLabel for="selectQuestion" value="Number" />
+		<h:inputText id="questionNumber" style="height: 25px;" styleClass="input-small" label="Number"
+			value="#{question.number}" />
+
+		<h:outputLabel for="selectQuestion" value="Summary" />
+		<h:inputText id="questionSummary" style="height: 25px;" styleClass="input-xxlarge" label="Summary"
+			value="#{question.summary}" />
+
+		<h:outputLabel for="questionContent" value="Content" />
+		<h:inputTextarea id="questionContent" styleClass="input-xxlarge" label="Content" rows="6" 
+			value="#{question.content}" />
+
+		<h:outputLabel for="questionExplanaition" value="Explanaition" />
+		<h:inputTextarea id="questionExplanaition" styleClass="input-xxlarge" label="Explanaition" rows="6" 
+			value="#{question.explanaition}" />
+
+		<h:outputLabel for="questionAnswers" value="Answers" />
+
+		<ol>
+			<ui:repeat id="questionAnswers" var="answer" value="#{question.answers}">
+				<li>
+					<h:inputTextarea value="#{answer.content}" styleClass="input-xxlarge" rows="2" /><br />
+				</li>
+			</ui:repeat>
+		</ol>
+
+		
+		<div>
+			<h:commandButton value="Submit" style="margin-right: 10pt;" styleClass="btn btn-primary" action="#{questionModifier.update}" />
+		</div>
+	
+	</h:form>
+</div>
+</h:body>
+</html>

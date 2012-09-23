@@ -1,0 +1,31 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Awake Technologies Exam Simulator</title>
+	<link rel="stylesheet" type="text/css" href="../resources/main.css" />
+	<link href="../resources/css/bootstrap.min.css" rel="stylesheet" />
+</h:head>
+
+<h:body>
+	<div class="container">
+		<form method="post" action="j_security_check" name="loginForm">
+			<h:panelGrid columns="2">
+				<h:outputLabel id="userNameLabel" for="j_username" value="Login:" />
+				<h:inputText id="j_username" value="#{param['j_username']}" style="height: 25px;" />
+
+				<h:outputLabel id="passwordLabel" for="j_password" value="Password:" />
+				<h:inputSecret id="j_password" autocomplete="off" style="height: 25px;" />
+
+				<h:commandButton type="submit" value="Login"
+					styleClass="btn btn-primary" />
+			</h:panelGrid>
+		</form>
+
+		<h:panelGroup styleClass="alert alert-error" rendered="#{not empty param['error']}">
+			<h:outputText value="Username or password doesn't match." />
+		</h:panelGroup>
+	</div>
+</h:body>
+</html>
