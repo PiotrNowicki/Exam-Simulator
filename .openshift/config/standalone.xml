@@ -449,9 +449,12 @@
             <security-domains>
                 <security-domain name="other" cache-type="default">
                     <authentication>
-                        <login-module code="UsersRoles" flag="required">
+                        
+						<login-module code="RealmUsersRoles" flag="required">
                             <module-option name="usersProperties" value="${jboss.server.config.dir}/application-users.properties"/>
                             <module-option name="rolesProperties" value="${jboss.server.config.dir}/application-roles.properties"/>
+                            <module-option name="realm" value="ApplicationRealm"/>
+                            <module-option name="password-stacking" value="useFirstPass"/>
                         </login-module>
                     </authentication>
                 </security-domain>
