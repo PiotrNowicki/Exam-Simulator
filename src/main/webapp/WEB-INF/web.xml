@@ -25,6 +25,7 @@
 
 	<login-config>
 		<auth-method>FORM</auth-method>
+		<realm-name>ApplicationRealm</realm-name>
 		<form-login-config>
 			<form-login-page>/admin/login.xhtml</form-login-page>
 			<form-error-page>/admin/login.xhtml?error=1</form-error-page>
