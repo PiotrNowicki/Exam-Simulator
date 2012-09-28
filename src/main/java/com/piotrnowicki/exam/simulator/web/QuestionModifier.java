@@ -10,7 +10,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
 
 import com.piotrnowicki.exam.simulator.boundary.QuestionsManager;
 import com.piotrnowicki.exam.simulator.entity.Answer;
