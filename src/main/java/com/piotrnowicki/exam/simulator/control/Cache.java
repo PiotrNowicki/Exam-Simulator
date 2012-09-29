@@ -53,7 +53,7 @@ public class Cache {
 	}
 
 	public void dataModified(@Observes DataModifiedEvent event) {
-		log.log(Level.INFO, "Data modified. Event related with question: {}.",
+		log.log(Level.INFO, "Data modified. Event related with question: {0}.",
 				event.getQuestion());
 
 		questions.clear();
