@@ -32,6 +32,12 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian.container</groupId>
+				<artifactId>arquillian-openshift-express</artifactId>
+				<version>1.0.0.Beta1</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -109,14 +115,20 @@
 		</dependency>
 
 		<dependency>
+			<groupId>eu.awaketech</groupId>
+			<artifactId>cdiconfig</artifactId>
+			<version>0.1</version>
+		</dependency>
+
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.arquillian.junit</groupId>
-			<artifactId>arquillian-junit-container</artifactId>
+			<groupId>org.jboss.arquillian.testng</groupId>
+			<artifactId>arquillian-testng-container</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -125,7 +137,27 @@
 			<artifactId>arquillian-protocol-servlet</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<scope>test</scope>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5-rc1</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -154,9 +186,6 @@
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.4.3</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -199,12 +228,34 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>arquillian-openshift-express</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.spec</groupId>
+					<artifactId>jboss-javaee-6.0</artifactId>
+					<version>1.0.0.Final</version>
+					<type>pom</type>
+					<scope>provided</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-openshift-express</artifactId>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 
 	<repositories>
 		<repository>
 			<id>renejeschke-releases</id>
 			<url>http://maven.renejeschke.de</url>
+		</repository>
+		<repository>
+			<id>mine</id>
+			<url>https://raw.github.com/PiotrNowicki/maven-repository/master/</url>
 		</repository>
 	</repositories>
 

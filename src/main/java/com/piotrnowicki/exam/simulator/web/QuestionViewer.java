@@ -1,7 +1,6 @@
 package com.piotrnowicki.exam.simulator.web;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Map;
 import java.util.NavigableMap;
 

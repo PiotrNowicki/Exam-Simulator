@@ -7,7 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.event.Observes;
@@ -18,7 +17,6 @@ import com.piotrnowicki.exam.simulator.entity.Question;
 
 @Singleton
 @Startup
-@DependsOn("initializer")
 public class Cache {
 
 	@Inject
@@ -27,16 +25,14 @@ public class Cache {
 	@Inject
 	Logger log;
 
-	NavigableMap<String, Question> questions;
+	NavigableMap<String, Question> questions = new TreeMap<>();
 
 	@PostConstruct
 	private void init() {
-		questions = new TreeMap<>();
-
 		populate();
 	}
 
-	private void populate() {
+	public void populate() {
 		List<Question> questionsFromDB = em.createNamedQuery(Question.READ_ALL,
 				Question.class).getResultList();
 

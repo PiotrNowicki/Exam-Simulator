@@ -8,3 +8,4 @@ target
 MANIFEST.MF
 .idea
 *.iml
+test-output

@@ -15,7 +15,7 @@ public class QuestionsManager {
 
 	@Inject
 	EntityManager em;
-	
+
 	@Inject
 	Event<DataModifiedEvent> events;
 
@@ -30,7 +30,7 @@ public class QuestionsManager {
 
 	public Question updateQuestion(Question question) {
 		events.fire(new DataModifiedEvent(question));
-		
+
 		return em.merge(question);
 	}
 
@@ -39,18 +39,18 @@ public class QuestionsManager {
 		em.persist(question);
 
 		events.fire(new DataModifiedEvent(question));
-		
+
 		return question;
 	}
 
 	public void deleteQuestion(Question question) {
-		events.fire(new DataModifiedEvent(question));
-		
 		if (!em.contains(question)) {
 			Question managedQuestion = getQuestionById(question.getId());
 			em.remove(managedQuestion);
 		} else {
 			em.remove(question);
 		}
+
+		events.fire(new DataModifiedEvent(question));
 	}
 }

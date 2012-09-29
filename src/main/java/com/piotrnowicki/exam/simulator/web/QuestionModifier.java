@@ -26,7 +26,7 @@ public class QuestionModifier implements Serializable {
 
 	@Inject
 	FacesContext ctx;
-	
+
 	@Inject
 	Logger log;
 
@@ -35,22 +35,6 @@ public class QuestionModifier implements Serializable {
 	private Question question;
 
 	private String questionId;
-
-	public Question getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
-
-	public String getQuestionId() {
-		return questionId;
-	}
-
-	public void setQuestionId(String questionNumber) {
-		this.questionId = questionNumber;
-	}
 
 	void loadQuestion(Long id) {
 		this.question = qManager.getQuestionById(id);
@@ -126,9 +110,25 @@ public class QuestionModifier implements Serializable {
 
 	public String logout() {
 		log.info("Logging out user");
-		
+
 		ctx.getExternalContext().invalidateSession();
 
 		return "index?faces-redirect=true";
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public String getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(String questionNumber) {
+		this.questionId = questionNumber;
 	}
 }
