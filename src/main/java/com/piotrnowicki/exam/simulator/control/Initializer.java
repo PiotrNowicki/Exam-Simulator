@@ -68,6 +68,7 @@ public class Initializer {
 		em.persist(qq1);
 		
 		log.warning("Data populated");
+		
 	}
 	
 }

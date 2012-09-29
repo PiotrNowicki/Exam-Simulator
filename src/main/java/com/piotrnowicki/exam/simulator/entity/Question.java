@@ -149,9 +149,11 @@ public class Question implements Serializable {
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		
 		builder.append("id", id);
 		builder.append("number", number);
 		builder.append("summary", summary);
+		
 		return builder.toString();
 	}
 }

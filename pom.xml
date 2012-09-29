@@ -125,7 +125,7 @@
 			<artifactId>arquillian-protocol-servlet</artifactId>
 			<scope>test</scope>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>
@@ -207,4 +207,5 @@
 			<url>http://maven.renejeschke.de</url>
 		</repository>
 	</repositories>
+
 </project>
