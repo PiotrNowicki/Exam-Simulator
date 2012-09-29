@@ -1,6 +1,7 @@
 package com.piotrnowicki.exam.simulator.web;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Map;
 import java.util.NavigableMap;
 
@@ -22,6 +23,8 @@ public class QuestionViewer implements Serializable {
 	QuestionsReader questionsReader;
 
 	private String questionNumber;
+	
+	private Integer questionOrderNumber;
 
 	private Question question;
 
@@ -42,6 +45,8 @@ public class QuestionViewer implements Serializable {
 			questionNumber = allQuestions.firstKey();
 		}
 
+		questionOrderNumber = allQuestions.headMap(questionNumber, true).size();
+		
 		this.question = questionsReader.getQuestionById(questionNumber);
 		this.nextQuestionNumber = allQuestions.higherKey(questionNumber);
 		this.previousQuestionNumber = allQuestions.lowerKey(questionNumber);
@@ -97,6 +102,14 @@ public class QuestionViewer implements Serializable {
 
 	public void setNextQuestionNumber(String nextQuestionNumber) {
 		this.nextQuestionNumber = nextQuestionNumber;
+	}
+
+	public Integer getQuestionOrderNumber() {
+		return questionOrderNumber;
+	}
+
+	public void setQuestionOrderNumber(Integer questionOrderNumber) {
+		this.questionOrderNumber = questionOrderNumber;
 	}
 
 }
