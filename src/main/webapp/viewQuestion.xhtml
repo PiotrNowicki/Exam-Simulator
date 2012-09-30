@@ -78,7 +78,7 @@
 
 	      	<ol style="padding-top: 10pt;">
 				<ui:repeat var="answer" value="#{question.answers}">
-					<li><h:outputText value="#{answer.content}" escape="false" /></li>
+					<li><h:outputText value="#{questionViewer.markdownify(answer.content)}" escape="false" /></li>
 				</ui:repeat>
 			</ol>
 	
