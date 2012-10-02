@@ -21,10 +21,20 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+/**
+ * Single question of the exam.
+ * 
+ * @author Piotr Nowicki
+ * 
+ */
+// TODO: Powinno sie dokumentowac propertiesy (private pola), czy gettery?
 @Entity
-@NamedQuery(name = Question.READ_ALL, query="SELECT q FROM Question q ORDER BY q.number")
+@NamedQuery(name = Question.READ_ALL, query = "SELECT q FROM Question q ORDER BY q.number")
 public class Question implements Serializable {
 
+	/**
+	 * Named query for returning all {@link Question}s
+	 */
 	public final static String READ_ALL = "Question.ReadAll";
 
 	private static final long serialVersionUID = 1L;
@@ -34,32 +44,54 @@ public class Question implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Size(min=1)
+	@Size(min = 1)
 	private String number;
 
 	@NotNull
-	@Size(min=1)
+	@Size(min = 1)
 	private String summary;
 
 	@NotNull
-	@Size(min=1)
-	@Column(length=16000)
+	@Size(min = 1)
+	@Column(length = 16000)
 	private String content;
 
-	@Column(length=16000)
+	@Column(length = 16000)
 	private String explanaition;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@OrderColumn(updatable=false)
+	@OrderColumn(updatable = false)
 	private List<Answer> answers = new LinkedList<>();
 
+	/**
+	 * Constructor mainly for the JPA purposes.
+	 */
 	public Question() {
 	}
 
+	/**
+	 * Convenient constructor.
+	 * 
+	 * @param number
+	 * @param summary
+	 * @param content
+	 */
 	public Question(String number, String summary, String content) {
 		this.number = number;
 		this.summary = summary;
 		this.content = content;
+	}
+
+	/**
+	 * Adds given answers to the question. Collection of {@link Answer}s is
+	 * always initialized, so user doesn't have to bother about it.
+	 * 
+	 * @param answers to be added
+	 */
+	public void addAnswers(Answer... answers) {
+		for (Answer answer : answers) {
+			this.answers.add(answer);
+		}
 	}
 
 	public String getNumber() {
@@ -106,12 +138,6 @@ public class Question implements Serializable {
 		this.explanaition = explanaition;
 	}
 
-	public void addAnswers(Answer... answers) {
-		for (Answer answer : answers) {
-			this.answers.add(answer);
-		}
-	}
-	
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
@@ -122,7 +148,7 @@ public class Question implements Serializable {
 
 		return hashCodeBuilder.toHashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -139,21 +165,22 @@ public class Question implements Serializable {
 
 		Question other = (Question) obj;
 		EqualsBuilder equalsBuilder = new EqualsBuilder();
-		
+
 		equalsBuilder.append(number, other.number);
 		equalsBuilder.append(summary, other.summary);
-	
+
 		return equalsBuilder.isEquals();
 	}
-	
+
 	@Override
 	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
-		
+		ToStringBuilder builder = new ToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+
 		builder.append("id", id);
 		builder.append("number", number);
 		builder.append("summary", summary);
-		
+
 		return builder.toString();
 	}
 }
