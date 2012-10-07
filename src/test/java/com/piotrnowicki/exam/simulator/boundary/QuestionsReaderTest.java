@@ -34,7 +34,7 @@ public class QuestionsReaderTest {
 		
 		// when
 		when(cut.cache.getQuestions()).thenReturn(questions);
-		Question actual = cut.getQuestionById(questionNum);
+		Question actual = cut.getQuestionByNumber(questionNum);
 		
 		// then
 		assertThat(actual).isEqualTo(expected);

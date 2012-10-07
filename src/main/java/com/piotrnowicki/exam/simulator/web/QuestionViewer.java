@@ -1,6 +1,5 @@
 package com.piotrnowicki.exam.simulator.web;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.NavigableMap;
 
@@ -14,9 +13,7 @@ import com.piotrnowicki.exam.simulator.entity.Question;
 
 @ManagedBean
 @ViewScoped
-public class QuestionViewer implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class QuestionViewer {
 
 	@Inject
 	QuestionsReader questionsReader;
@@ -46,7 +43,7 @@ public class QuestionViewer implements Serializable {
 
 		questionOrderNumber = allQuestions.headMap(questionNumber, true).size();
 		
-		this.question = questionsReader.getQuestionById(questionNumber);
+		this.question = questionsReader.getQuestionByNumber(questionNumber);
 		this.nextQuestionNumber = allQuestions.higherKey(questionNumber);
 		this.previousQuestionNumber = allQuestions.lowerKey(questionNumber);
 	}

@@ -7,60 +7,97 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+/**
+ * Single Answer to the given {@link Question}.
+ * 
+ * @author Piotr Nowicki
+ * 
+ */
 @Entity
 public class Answer implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@NotNull
-	@Column(length=16000)
-	private String content;
+    /**
+     * <p>
+     * Content of the answer.
+     * </p>
+     * <p>
+     * You can use the Markdown syntax here.
+     * </p>
+     */
+    @NotNull
+    @Size(min = 1)
+    @Column(length = 16000)
+    private String content;
 
-	@Column(length=16000)
-	private String explanaition;
+    /**
+     * Answer-local explanation, e.g. "the foo occurs, so this answer is not correct". It's independent on the {@link Question}
+     * 's global expalation.
+     */
+    @Column(length = 16000)
+    private String explanation;
 
-	public Answer() {
-	}
+    /**
+     * Constructor for the JPA purposes.
+     */
+    public Answer() {
+    }
 
-	public Answer(String content) {
-		this.content = content;
-	}
+    /**
+     * Convenient constructor.
+     * 
+     * @param content of the question
+     */
+    public Answer(String content) {
+        this.content = content;
+    }
 
-	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
-		
-		builder.append("id", id);
-		builder.append("content", content);
-		
-		return builder.toString();
-	}
+    // -------------------------------------------------------------------------------||
+    // Getters and setters -----------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
 
-	public String getContent() {
-		return content;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public String getExplanaition() {
-		return explanaition;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setExplanaition(String explanaition) {
-		this.explanaition = explanaition;
-	}
+    public String getExplanation() {
+        return explanation;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
+
+    // -------------------------------------------------------------------------------||
+    // Other contracts ---------------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
+
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+
+        builder.append("id", id);
+        builder.append("content", content);
+
+        return builder.toString();
+    }
+
 }

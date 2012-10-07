@@ -1,47 +1,177 @@
 package com.piotrnowicki.exam.simulator.boundary;
 
-import java.util.NavigableMap;
+import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 import org.testng.annotations.Test;
 
 import com.piotrnowicki.exam.simulator.control.Cache;
 import com.piotrnowicki.exam.simulator.entity.Question;
 
+// TODO: Use DBUnit and Persistence in Arquillian (https://github.com/PiotrNowicki/Exam-Simulator/issues/26)
+// TODO: Remove the hideous invokeInTxAndRollback with @Transactional(ROLLBACK) if it starts to work...
 public class QuestionsManagerIntegrationTest extends Arquillian {
 
-	@Deployment
-	public static WebArchive deploy() {
-		WebArchive archive = ShrinkWrap.create(WebArchive.class);
-		
-		// Add entities
-		archive.addPackage(Question.class.getPackage());
+    @Resource
+    private UserTransaction utx;
 
-		// ... control logic
-		archive.addPackage(Cache.class.getPackage());
+    @Inject
+    private QuestionsManager cut;
 
-		// ... and the boundary we're testing
-		archive.addClass(QuestionsManager.class);
+    @Inject
+    private Cache cache;
 
-		// Remember about JPA and CDI config
-		archive.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml");
-		archive.addAsWebInfResource("beans.xml");
-		
-		// Also add all runtime dependencies from Maven we require
-//		MavenRepositorySystem
-		return archive;
-	}
-	
-	@Inject
-	private Cache cache;
+    @Deployment
+    public static WebArchive deploy() {
+        WebArchive archive = ShrinkWrap.create(WebArchive.class);
 
-	@Test
-	public void f() {
-		NavigableMap<String,Question> questions = cache.getQuestions();
-	}
+        // Add entities
+        archive.addPackage(Question.class.getPackage());
+
+        // ... control logic
+        archive.addPackage(Cache.class.getPackage());
+
+        // ... and the boundary we're testing.
+        archive.addClass(QuestionsManager.class);
+
+        // Remember about JPA, EJB and CDI config
+        archive.addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml");
+        archive.addAsWebInfResource("beans.xml");
+        archive.addAsWebInfResource("ejb-jar.xml");
+
+        // Also add all runtime dependencies from Maven we require
+        File[] dependencies = DependencyResolvers.use(MavenDependencyResolver.class).includeDependenciesFromPom("pom.xml")
+                .resolveAsFiles();
+        archive.addAsLibraries(dependencies);
+
+        return archive;
+    }
+
+    // -------------------------------------------------------------------------------||
+    // Test methods ------------------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
+
+    @Test
+    public void dataIsPopulated() {
+        // given populated cache - see Initializer Singleton EJB.
+
+        // when
+        List<Question> questions = cut.getQuestions();
+
+        // then
+        assertThat(questions.size()).isEqualTo(3);
+        assertThat(questions.get(0).getNumber()).isEqualTo("Q01");
+        assertThat(questions.get(1).getNumber()).isEqualTo("Q02");
+        assertThat(questions.get(2).getNumber()).isEqualTo("Q03");
+    }
+
+    @Test
+    public void updateIsSavedAndCached() throws Exception {
+
+        invokeInTxAndRollback(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                // given
+                Question question = cut.getQuestions().get(0);
+
+                // when
+                question.setSummary("My test summary");
+                cut.updateQuestion(question);
+
+                // then
+                Question actual = cut.getQuestionById(question.getId());
+                assertThat(actual.getSummary()).isEqualTo("My test summary");
+
+                // check the cache for update
+                Question questionFromCache = cache.getQuestions().get(question.getNumber());
+                assertThat(questionFromCache.getSummary()).isEqualTo("My test summary");
+
+                return null;
+            }
+        });
+    }
+
+    @Test
+    public void createIsSavedAndCached() throws Exception {
+
+        invokeInTxAndRollback(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                // given
+                Question question = new Question("Qxx", "aaaaaaaaaa", "bbbbbbbbbb");
+
+                // when
+                cut.createQuestion(question);
+
+                // then
+                Question actual = cut.getQuestionById(question.getId());
+                assertThat(actual).isEqualTo(question);
+
+                // check if the cache was updated
+                Question questionFromCache = cache.getQuestions().get(question.getNumber());
+                assertThat(questionFromCache).isEqualTo(question);
+
+                return null;
+            }
+        });
+    }
+
+    @Test
+    public void deleteIsSavedAndCached() throws Exception {
+
+        invokeInTxAndRollback(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                // given
+                Question question = cut.getQuestions().get(0);
+
+                // when
+                cut.deleteQuestion(question);
+
+                // then
+                Question actual = cut.getQuestionById(question.getId());
+                assertThat(actual).isNull();
+
+                // check if the cache was updated
+                Question questionFromCache = cache.getQuestions().get(question.getNumber());
+                assertThat(questionFromCache).isNull();
+
+                return null;
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------------||
+    // Helper methods ----------------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
+
+    /**
+     * Invoke given code in rolled-back transaction.
+     * 
+     * @param code to be executed (and rolled back) within the transaction
+     * 
+     * @throws Exception we're not catching it as this is in every-case a test-failure.
+     */
+    void invokeInTxAndRollback(final Callable<Void> code) throws Exception {
+        try {
+            utx.begin();
+
+            code.call();
+        } finally {
+            utx.rollback();
+        }
+    }
 }

@@ -27,160 +27,209 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author Piotr Nowicki
  * 
  */
-// TODO: Powinno sie dokumentowac propertiesy (private pola), czy gettery?
 @Entity
 @NamedQuery(name = Question.READ_ALL, query = "SELECT q FROM Question q ORDER BY q.number")
 public class Question implements Serializable {
 
-	/**
-	 * Named query for returning all {@link Question}s
-	 */
-	public final static String READ_ALL = "Question.ReadAll";
+    /**
+     * Named query for returning all {@link Question}s
+     */
+    public final static String READ_ALL = "Question.ReadAll";
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@NotNull
-	@Size(min = 1)
-	private String number;
+    /**
+     * <p>
+     * Human readable question's number.
+     * </p>
+     * 
+     * <p>
+     * It is shown to the user and it's also used in the sorting.
+     * </p>
+     * 
+     */
+    @NotNull
+    @Size(min = 1)
+    private String number;
 
-	@NotNull
-	@Size(min = 1)
-	private String summary;
+    /**
+     * Short summary of the question. It might be treated as a question's title (not its content!)
+     */
+    @NotNull
+    @Size(min = 5)
+    private String summary;
 
-	@NotNull
-	@Size(min = 1)
-	@Column(length = 16000)
-	private String content;
+    /**
+     * <p>
+     * Content of the question.
+     * </p>
+     * <p>
+     * You can use the Markdown syntax here.
+     * </p>
+     */
+    // TODO: Can the JSR-303 @Size(max=) be used by the JPA to generate max. column length?
+    @NotNull
+    @Size(min = 10)
+    @Column(length = 16000)
+    private String content;
 
-	@Column(length = 16000)
-	private String explanaition;
+    /**
+     * <p>
+     * Explanation for the question's answer.
+     * </p>
+     * <p>
+     * Mind that each {@link Answer} can have its own explanation independent on the Question's one.
+     * </p>
+     */
+    @Column(length = 16000)
+    private String explanaition;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-	@OrderColumn(updatable = false)
-	private List<Answer> answers = new LinkedList<>();
+    /**
+     * <p>
+     * Possible answers to the question.
+     * </p>
+     * 
+     * <p>
+     * Loaded eagerly as there is no much point in getting a {@link Question} without the {@link Answer}s already populated. <br />
+     * The order of the answers must be preserved as we might depend on it in the answer.<br />
+     * Finally, the {@link Answer} cannot exist if there is no {@link Question} related with it.
+     * </p>
+     */
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OrderColumn(updatable = false)
+    private List<Answer> answers = new LinkedList<>();
 
-	/**
-	 * Constructor mainly for the JPA purposes.
-	 */
-	public Question() {
-	}
+    /**
+     * Constructor for the JPA purposes.
+     */
+    public Question() {
+    }
 
-	/**
-	 * Convenient constructor.
-	 * 
-	 * @param number
-	 * @param summary
-	 * @param content
-	 */
-	public Question(String number, String summary, String content) {
-		this.number = number;
-		this.summary = summary;
-		this.content = content;
-	}
+    /**
+     * Convenient constructor.
+     * 
+     * @param number
+     * @param summary
+     * @param content
+     */
+    public Question(String number, String summary, String content) {
+        this.number = number;
+        this.summary = summary;
+        this.content = content;
+    }
 
-	/**
-	 * Adds given answers to the question. Collection of {@link Answer}s is
-	 * always initialized, so user doesn't have to bother about it.
-	 * 
-	 * @param answers to be added
-	 */
-	public void addAnswers(Answer... answers) {
-		for (Answer answer : answers) {
-			this.answers.add(answer);
-		}
-	}
+    /**
+     * Adds given answers to the question. Collection of {@link Answer}s is always initialized, so user doesn't have to bother
+     * about it. <br />
+     * This method doesn't pay attention to the duplication of {@link Answer}s - it just adds everything you pass it and it
+     * won't complain.
+     * 
+     * @param answers to be added
+     */
+    public void addAnswers(Answer... answers) {
+        for (Answer answer : answers) {
+            this.answers.add(answer);
+        }
+    }
 
-	public String getNumber() {
-		return number;
-	}
+    // -------------------------------------------------------------------------------||
+    // Getters and setters -----------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getSummary() {
-		return summary;
-	}
+    public String getNumber() {
+        return number;
+    }
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
+    public void setNumber(String number) {
+        this.number = number;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getSummary() {
+        return summary;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public List<Answer> getAnswers() {
-		return answers;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
+    public List<Answer> getAnswers() {
+        return answers;
+    }
 
-	public String getExplanaition() {
-		return explanaition;
-	}
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 
-	public void setExplanaition(String explanaition) {
-		this.explanaition = explanaition;
-	}
+    public String getExplanaition() {
+        return explanaition;
+    }
 
-	@Override
-	public int hashCode() {
-		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+    public void setExplanaition(String explanaition) {
+        this.explanaition = explanaition;
+    }
 
-		hashCodeBuilder.append(id);
-		hashCodeBuilder.append(number);
-		hashCodeBuilder.append(summary);
+    // -------------------------------------------------------------------------------||
+    // Other contracts ---------------------------------------------------------------||
+    // -------------------------------------------------------------------------------||
 
-		return hashCodeBuilder.toHashCode();
-	}
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
+        hashCodeBuilder.append(id);
+        hashCodeBuilder.append(number);
+        hashCodeBuilder.append(summary);
 
-		if (obj == null) {
-			return false;
-		}
+        return hashCodeBuilder.toHashCode();
+    }
 
-		if (!(obj instanceof Question)) {
-			return false;
-		}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-		Question other = (Question) obj;
-		EqualsBuilder equalsBuilder = new EqualsBuilder();
+        if (obj == null) {
+            return false;
+        }
 
-		equalsBuilder.append(number, other.number);
-		equalsBuilder.append(summary, other.summary);
+        if (!(obj instanceof Question)) {
+            return false;
+        }
 
-		return equalsBuilder.isEquals();
-	}
+        Question other = (Question) obj;
+        EqualsBuilder equalsBuilder = new EqualsBuilder();
 
-	@Override
-	public String toString() {
-		ToStringBuilder builder = new ToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+        equalsBuilder.append(number, other.number);
+        equalsBuilder.append(summary, other.summary);
 
-		builder.append("id", id);
-		builder.append("number", number);
-		builder.append("summary", summary);
+        return equalsBuilder.isEquals();
+    }
 
-		return builder.toString();
-	}
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+
+        builder.append("id", id);
+        builder.append("number", number);
+        builder.append("summary", summary);
+
+        return builder.toString();
+    }
 }

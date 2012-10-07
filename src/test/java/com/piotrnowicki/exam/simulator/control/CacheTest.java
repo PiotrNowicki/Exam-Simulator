@@ -18,7 +18,6 @@ import org.testng.annotations.Test;
 
 import com.piotrnowicki.exam.simulator.entity.Question;
 
-
 public class CacheTest {
 	
 	private Cache cut;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar>
+	<!-- This file seems to be important for JBoss as there is some kind of 
+		race between multiple singleton instances with @Startup. -->
+	<enterprise-beans>
+		<session>
+			<ejb-name>Cache</ejb-name>
+			<ejb-class>com.piotrnowicki.exam.simulator.control.Cache</ejb-class>
+			<depends-on>
+				<ejb-name>Initializer</ejb-name>
+			</depends-on>
+		</session>
+	</enterprise-beans>
+</ejb-jar>

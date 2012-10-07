@@ -1,6 +1,5 @@
 package com.piotrnowicki.exam.simulator.web;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,9 +16,7 @@ import com.piotrnowicki.exam.simulator.entity.Question;
 
 @ManagedBean
 @ViewScoped
-public class QuestionModifier implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class QuestionModifier  {
 
 	@Inject
 	QuestionsManager qManager;
@@ -28,7 +25,7 @@ public class QuestionModifier implements Serializable {
 	FacesContext ctx;
 
 	@Inject
-	Logger log;
+	transient Logger log;
 
 	private static final Integer NUMBER_OF_QUESTIONS = 8;
 

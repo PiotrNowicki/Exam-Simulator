@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import com.piotrnowicki.exam.simulator.entity.Answer;
 import com.piotrnowicki.exam.simulator.entity.Question;
 
-@Singleton(name="initializer")
+@Singleton(name = "Initializer")
 @Startup
 public class Initializer {
 
@@ -53,11 +53,13 @@ public class Initializer {
 		qq.setExplanaition("Reference: page 22, 3.1 “HTTP Protocol Parameters” Explanation: When the same variable name exists in the query string, as well as in the POST body, the resulting parameter values list will consists of the query string values, followed by the POST data. TheHttpServletRequest#getParameter(-) returns only the first parameter value.");
 		em.persist(qq);
 		
+		
+		
 		Answer aaa1 = new Answer("Content of answer xxxx1");
 		Answer aaa2 = new Answer("Content of answer xxxx2");
 		Answer aaa3 = new Answer("Content of answer xxxx3");
 		
-		Question qq1 = new Question("Q03", "xxxxx", "zzzzz");
+		Question qq1 = new Question("Q03", "xxxxxxxxxxxx", "zzzzzzzzzzzzzz");
 		qq1.addAnswers(aaa1, aaa2, aaa3);
 		
 		qq1.setExplanaition("Explanaition 3");
