@@ -4,13 +4,16 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.persistence.Cleanup;
+import org.jboss.arquillian.persistence.TestExecutionPhase;
+import org.jboss.arquillian.persistence.TransactionMode;
+import org.jboss.arquillian.persistence.Transactional;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -22,7 +25,7 @@ import com.piotrnowicki.exam.simulator.control.Cache;
 import com.piotrnowicki.exam.simulator.entity.Question;
 
 // TODO: Use DBUnit and Persistence in Arquillian (https://github.com/PiotrNowicki/Exam-Simulator/issues/26)
-// TODO: Remove the hideous invokeInTxAndRollback with @Transactional(ROLLBACK) if it starts to work...
+@Cleanup(phase = TestExecutionPhase.NONE)
 public class QuestionsManagerIntegrationTest extends Arquillian {
 
     @Resource
@@ -79,99 +82,59 @@ public class QuestionsManagerIntegrationTest extends Arquillian {
     }
 
     @Test
+    @Transactional(TransactionMode.ROLLBACK)
     public void updateIsSavedAndCached() throws Exception {
 
-        invokeInTxAndRollback(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                // given
-                Question question = cut.getQuestions().get(0);
+        // given
+        Question question = cut.getQuestions().get(0);
 
-                // when
-                question.setSummary("My test summary");
-                cut.updateQuestion(question);
+        // when
+        question.setSummary("My test summary");
+        cut.updateQuestion(question);
 
-                // then
-                Question actual = cut.getQuestionById(question.getId());
-                assertThat(actual.getSummary()).isEqualTo("My test summary");
+        // then
+        Question actual = cut.getQuestionById(question.getId());
+        assertThat(actual.getSummary()).isEqualTo("My test summary");
 
-                // check the cache for update
-                Question questionFromCache = cache.getQuestions().get(question.getNumber());
-                assertThat(questionFromCache.getSummary()).isEqualTo("My test summary");
-
-                return null;
-            }
-        });
+        // check the cache for update
+        Question questionFromCache = cache.getQuestions().get(question.getNumber());
+        assertThat(questionFromCache.getSummary()).isEqualTo("My test summary");
     }
 
     @Test
+    @Transactional(TransactionMode.ROLLBACK)
     public void createIsSavedAndCached() throws Exception {
 
-        invokeInTxAndRollback(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                // given
-                Question question = new Question("Qxx", "aaaaaaaaaa", "bbbbbbbbbb");
+        // given
+        Question question = new Question("Qxx", "aaaaaaaaaa", "bbbbbbbbbb");
 
-                // when
-                cut.createQuestion(question);
+        // when
+        cut.createQuestion(question);
 
-                // then
-                Question actual = cut.getQuestionById(question.getId());
-                assertThat(actual).isEqualTo(question);
+        // then
+        Question actual = cut.getQuestionById(question.getId());
+        assertThat(actual).isEqualTo(question);
 
-                // check if the cache was updated
-                Question questionFromCache = cache.getQuestions().get(question.getNumber());
-                assertThat(questionFromCache).isEqualTo(question);
-
-                return null;
-            }
-        });
+        // check if the cache was updated
+        Question questionFromCache = cache.getQuestions().get(question.getNumber());
+        assertThat(questionFromCache).isEqualTo(question);
     }
 
     @Test
+    @Transactional(TransactionMode.ROLLBACK)
     public void deleteIsSavedAndCached() throws Exception {
+        // given
+        Question question = cut.getQuestions().get(0);
 
-        invokeInTxAndRollback(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                // given
-                Question question = cut.getQuestions().get(0);
+        // when
+        cut.deleteQuestion(question);
 
-                // when
-                cut.deleteQuestion(question);
+        // then
+        Question actual = cut.getQuestionById(question.getId());
+        assertThat(actual).isNull();
 
-                // then
-                Question actual = cut.getQuestionById(question.getId());
-                assertThat(actual).isNull();
-
-                // check if the cache was updated
-                Question questionFromCache = cache.getQuestions().get(question.getNumber());
-                assertThat(questionFromCache).isNull();
-
-                return null;
-            }
-        });
-    }
-
-    // -------------------------------------------------------------------------------||
-    // Helper methods ----------------------------------------------------------------||
-    // -------------------------------------------------------------------------------||
-
-    /**
-     * Invoke given code in rolled-back transaction.
-     * 
-     * @param code to be executed (and rolled back) within the transaction
-     * 
-     * @throws Exception we're not catching it as this is in every-case a test-failure.
-     */
-    void invokeInTxAndRollback(final Callable<Void> code) throws Exception {
-        try {
-            utx.begin();
-
-            code.call();
-        } finally {
-            utx.rollback();
-        }
+        // check if the cache was updated
+        Question questionFromCache = cache.getQuestions().get(question.getNumber());
+        assertThat(questionFromCache).isNull();
     }
 }
