@@ -10,6 +10,11 @@
 	<name>Exam Simulator</name>
 	<description>Exam Simulator for the Oracle Certified Expert Web Component Developer</description>
 
+	<scm>
+		<url>scm:git:git://github.com/PiotrNowicki</url>
+		<developerConnection>scm:git:git://github.com/PiotrNowicki</developerConnection>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jboss.bom.version>1.0.0.Final</jboss.bom.version>
@@ -110,6 +115,20 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -136,6 +155,30 @@
 					<excludes>
 						<exclude>**/*IntegrationTest.java</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- Save revision number for future access. -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>true</doCheck>
+					<doUpdate>false</doUpdate>
+					<shortRevisionLength>4</shortRevisionLength>
+					<format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+					<items>
+						<item>timestamp</item>
+					</items>
 				</configuration>
 			</plugin>
 		</plugins>
