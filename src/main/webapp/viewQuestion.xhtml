@@ -58,7 +58,7 @@
 		<div class="row-fluid">
 			<div class="span2">
 				<ul class="pager">
-					<li class="previous"><h:link value="&#8592; Previous"
+					<li class="previous"><h:link value="&#8592; #{msgs.previousQuestion}"
 							outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}"
 							rendered="#{not empty questionViewer.previousQuestionNumber}" />
 					</li>
@@ -66,7 +66,7 @@
 			</div>
 			<div class="span8" style="margin-top: 20px;">
 				<h:selectOneMenu style="width: 100%; " id="selectQuestion"
-					title="sss" value="#{questionViewer.questionNumber}"
+					title="select question" value="#{questionViewer.questionNumber}"
 					onchange="window.location='?q=' + this.options[this.selectedIndex].value">
 					<f:selectItems value="#{questionViewer.allQuestions().values()}"
 						var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
@@ -75,7 +75,7 @@
 			</div>
 			<div class="span2">
 				<ul class="pager">
-					<li class="next"><h:link value="Next &#8594;"
+					<li class="next"><h:link value="#{msgs.nextQuestion} &#8594;"
 							outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}"
 							rendered="#{not empty questionViewer.nextQuestionNumber}" /></li>
 				</ul>
@@ -112,7 +112,7 @@
 				</ol>
 
 				<h:form prependId="false">
-					<h:commandButton style="margin: 10pt 0;"
+					<h:commandButton style="margin: 10pt 0;" 
 						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Show answer'}"
 						styleClass="btn btn-primary">
 						<f:ajax listener="#{questionViewer.toggleExplanaition()}"

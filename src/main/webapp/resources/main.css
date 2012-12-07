@@ -2,6 +2,13 @@ body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
       
+.footer {
+	text-align: right;
+	margin-top: 100pt;
+	margin-right: 100pt;
+	color: #cccccc;
+	font-size: small;
+}
 ol {
 	list-style-type: lower-alpha;
 }

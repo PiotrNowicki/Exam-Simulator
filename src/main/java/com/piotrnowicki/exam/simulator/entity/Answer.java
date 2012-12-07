@@ -36,7 +36,7 @@ public class Answer implements Serializable {
      * </p>
      */
     @NotNull
-    @Size(min = 1)
+//    @Size(min = 1)
     @Column(length = 16000)
     private String content;
 

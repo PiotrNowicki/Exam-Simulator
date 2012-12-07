@@ -33,7 +33,7 @@ public class Cache {
 
     @Inject
     Logger log;
-
+    
     /**
      * The cache structure itself. It maps human readable question's number {@link Question#number} to the {@link Question}
      * instance. It is a sorted structure and sorting is based on the {@link String#compareTo(String)}.

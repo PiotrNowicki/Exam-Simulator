@@ -35,9 +35,7 @@ public class Initializer {
 		
 		em.persist(q);
 		
-		
-		
-		
+
 		Answer aa1 = new Answer("[q1, q2]");
 		Answer aa2 = new Answer("[q3]");
 		Answer aa3 = new Answer("[q2]");
