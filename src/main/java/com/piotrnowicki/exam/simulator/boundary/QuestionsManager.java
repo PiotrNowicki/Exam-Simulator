@@ -3,11 +3,12 @@ package com.piotrnowicki.exam.simulator.boundary;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 
 import com.piotrnowicki.exam.simulator.control.DataModifiedEvent;
+import com.piotrnowicki.exam.simulator.control.FireEventInterceptor;
 import com.piotrnowicki.exam.simulator.entity.Question;
 
 /**
@@ -28,9 +29,6 @@ public class QuestionsManager {
 
     @Inject
     EntityManager em;
-
-    @Inject
-    Event<DataModifiedEvent> events;
 
     /**
      * Returns the question with the automatically generated PK.
@@ -63,9 +61,8 @@ public class QuestionsManager {
      * 
      * @return JPA managed updated entity
      */
+    @Interceptors(FireEventInterceptor.class)
     public Question updateQuestion(Question question) {
-        events.fire(new DataModifiedEvent(question));
-
         return em.merge(question);
     }
 
@@ -80,10 +77,9 @@ public class QuestionsManager {
      * 
      * @return JPA managed and freshly persisted entity
      */
+    @Interceptors(FireEventInterceptor.class)
     public Question createQuestion(Question question) {
         em.persist(question);
-
-        events.fire(new DataModifiedEvent(question));
 
         return question;
     }
@@ -101,6 +97,7 @@ public class QuestionsManager {
      * 
      * @param question to be deleted from the DB.
      */
+    @Interceptors(FireEventInterceptor.class)
     public void deleteQuestion(Question question) {
         if (!em.contains(question)) {
             Question managedQuestion = getQuestionById(question.getId());
@@ -108,7 +105,5 @@ public class QuestionsManager {
         } else {
             em.remove(question);
         }
-
-        events.fire(new DataModifiedEvent(question));
     }
 }
