@@ -7,10 +7,12 @@
 	<title>Exam Simulator - #{questionViewer.questionNumber}
 		#{questionViewer.question.summary}</title>
 	<link rel="stylesheet" type="text/css" href="resources/main.css" />
-	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css"
+		href="resources/prettify/prettify.css" />
+	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
 	<link rel="shortcut icon" href="resources/favicon.ico" />
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-20849655-4']);
@@ -23,6 +25,28 @@
   })();
 
 </script>
+	<script type='text/javascript'
+		src='resources/jquery/jquery-1.8.3.min.js'></script>
+
+	<script type='text/javascript'>
+	<!-- Great, optimized jQuery automatic prettifier taken from http://tomayko.com/writings/javascript-prettification -->
+	$(document).ready(function() {
+
+	    // add prettyprint class to all <pre><code></code></pre> blocks
+	    var prettify = false;
+	    $('pre code').parent().each(function() {
+	        $(this).addClass('prettyprint');
+	        prettify = true;
+	    });
+
+	    // if code blocks were found, bring in the prettifier ...
+	    if ( prettify ) {
+	        $.getScript('resources/prettify/prettify.js', function() { prettyPrint() });
+	    }
+
+	});
+
+ 	 </script>
 </h:head>
 
 <f:metadata>
@@ -32,7 +56,6 @@
 </f:metadata>
 
 <h:body>
-
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -58,7 +81,8 @@
 		<div class="row-fluid">
 			<div class="span2">
 				<ul class="pager">
-					<li class="previous"><h:link value="&#8592; #{msgs.previousQuestion}"
+					<li class="previous"><h:link
+							value="&#8592; #{msgs.previousQuestion}"
 							outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}"
 							rendered="#{not empty questionViewer.previousQuestionNumber}" />
 					</li>
@@ -112,7 +136,7 @@
 				</ol>
 
 				<h:form prependId="false">
-					<h:commandButton style="margin: 10pt 0;" 
+					<h:commandButton style="margin: 10pt 0;"
 						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Show answer'}"
 						styleClass="btn btn-primary">
 						<f:ajax listener="#{questionViewer.toggleExplanaition()}"
