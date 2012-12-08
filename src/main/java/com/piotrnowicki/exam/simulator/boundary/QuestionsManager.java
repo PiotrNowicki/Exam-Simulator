@@ -22,7 +22,6 @@ import com.piotrnowicki.exam.simulator.entity.Question;
  * 
  */
 @Stateless
-// TODO: Move event firing methods into single, reused interceptor (https://github.com/PiotrNowicki/Exam-Simulator/issues/24)
 // TODO: Add the security context to the EJBs as well - right now only the web app is secured, not this EJB directly
 // (https://github.com/PiotrNowicki/Exam-Simulator/issues/25).
 public class QuestionsManager {

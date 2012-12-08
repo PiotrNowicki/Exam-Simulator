@@ -16,116 +16,149 @@ import com.piotrnowicki.exam.simulator.entity.Question;
 
 @ManagedBean
 @ViewScoped
-public class QuestionModifier  {
+public class QuestionModifier {
 
-	@Inject
-	QuestionsManager qManager;
+    @Inject
+    QuestionsManager qManager;
 
-	@Inject
-	FacesContext ctx;
+    @Inject
+    FacesContext ctx;
 
-	@Inject
-	transient Logger log;
+    @Inject
+    transient Logger log;
 
-	private static final Integer NUMBER_OF_QUESTIONS = 8;
+    private static final Integer NUMBER_OF_QUESTIONS = 8;
 
-	private Question question;
+    private Question question;
 
-	private String questionId;
+    private String questionId;
 
-	void loadQuestion(Long id) {
-		this.question = qManager.getQuestionById(id);
-	}
+    private String previousQuestionNumber;
 
-	public void loadAnswers() {
-		while (question.getAnswers().size() < NUMBER_OF_QUESTIONS) {
-			question.addAnswers(new Answer());
-		}
-	}
+    private String nextQuestionNumber;
 
-	public void initCreation(ComponentSystemEvent event) {
+    void loadQuestion(Long id) {
+        this.question = qManager.getQuestionById(id);
+    }
 
-		if (!ctx.isPostback()) {
-			question = new Question();
+    public void loadAnswers() {
+        while (question.getAnswers().size() < NUMBER_OF_QUESTIONS) {
+            question.addAnswers(new Answer());
+        }
+    }
 
-			for (int i = 0; i < NUMBER_OF_QUESTIONS; i++) {
-				question.addAnswers(new Answer());
-			}
-		}
-	}
+    public void initCreation(ComponentSystemEvent event) {
 
-	public void loadQuestion(String id) {
-		if (id == null) {
-			Long firstId = qManager.getQuestions().get(0).getId();
-			loadQuestion(firstId);
-		} else {
-			loadQuestion(Long.valueOf(id));
-		}
+        if (!ctx.isPostback()) {
+            question = new Question();
 
-		loadAnswers();
-	}
+            for (int i = 0; i < NUMBER_OF_QUESTIONS; i++) {
+                question.addAnswers(new Answer());
+            }
+        }
+    }
 
-	public List<Question> allQuestions() {
-		return qManager.getQuestions();
-	}
+    public void loadQuestion(String id) {
+        
+        List<Question> questions = qManager.getQuestions();
+        
+        if (id == null) {
+            Long firstId = questions.get(0).getId();
+            loadQuestion(firstId);
+        } else {
+            loadQuestion(Long.valueOf(id));
+        }
+        
+        int idx = questions.indexOf(question);
+        
+        if (idx < questions.size() - 1) {
+            this.nextQuestionNumber = questions.get(idx + 1).getId() + "";
+        }
+        
+        if (idx >= 1) {
+            this.previousQuestionNumber = questions.get(idx - 1).getId() + "";
+        }
+        
+        loadAnswers();
+    }
 
-	public String update() {
-		boolean isUpdate = (question.getId() == null) ? false : true;
+    public List<Question> allQuestions() {
+        return qManager.getQuestions();
+    }
 
-		removeEmptyAnswers();
+    public String update() {
+        boolean isUpdate = (question.getId() == null) ? false : true;
 
-		if (isUpdate) {
-			qManager.updateQuestion(question);
-			return null;
-		} else {
-			qManager.createQuestion(question);
+        removeEmptyAnswers();
 
-			String url = "modifyQuestion.xhtml?faces-redirect=true&q="
-					+ question.getId();
-			return url;
-		}
+        if (isUpdate) {
+            qManager.updateQuestion(question);
+            return null;
+        } else {
+            qManager.createQuestion(question);
 
-	}
+            String url = "modifyQuestion.xhtml?faces-redirect=true&q=" + question.getId();
+            return url;
+        }
 
-	public String delete() {
-		qManager.deleteQuestion(question);
+    }
 
-		return "modifyQuestion";
-	}
+    public String delete() {
+        qManager.deleteQuestion(question);
 
-	void removeEmptyAnswers() {
-		Iterator<Answer> it = question.getAnswers().iterator();
+        return "modifyQuestion";
+    }
 
-		while (it.hasNext()) {
-			Answer answer = it.next();
+    void removeEmptyAnswers() {
+        Iterator<Answer> it = question.getAnswers().iterator();
 
-			if (answer.getContent().isEmpty()) {
-				it.remove();
-			}
-		}
-	}
+        while (it.hasNext()) {
+            Answer answer = it.next();
 
-	public String logout() {
-		log.info("Logging out user");
+            if (answer.getContent().isEmpty()) {
+                it.remove();
+            }
+        }
+    }
 
-		ctx.getExternalContext().invalidateSession();
+    public String logout() {
+        log.info("Logging out user");
 
-		return "index?faces-redirect=true";
-	}
+        ctx.getExternalContext().invalidateSession();
 
-	public Question getQuestion() {
-		return question;
-	}
+        return "index?faces-redirect=true";
+    }
 
-	public void setQuestion(Question question) {
-		this.question = question;
-	}
+    public Question getQuestion() {
+        return question;
+    }
 
-	public String getQuestionId() {
-		return questionId;
-	}
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
-	public void setQuestionId(String questionNumber) {
-		this.questionId = questionNumber;
-	}
+    public String getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(String questionNumber) {
+        this.questionId = questionNumber;
+    }
+
+    public String getPreviousQuestionNumber() {
+        return previousQuestionNumber;
+    }
+
+    public void setPreviousQuestionNumber(String previousQuestionNumber) {
+        this.previousQuestionNumber = previousQuestionNumber;
+    }
+
+    public String getNextQuestionNumber() {
+        return nextQuestionNumber;
+    }
+
+    public void setNextQuestionNumber(String nextQuestionNumber) {
+        this.nextQuestionNumber = nextQuestionNumber;
+    }
+
 }

@@ -71,7 +71,6 @@ public class Question implements Serializable {
      * You can use the Markdown syntax here.
      * </p>
      */
-    // TODO: Can the JSR-303 @Size(max=) be used by the JPA to generate max. column length?
     @NotNull
     @Size(min = 10)
     @Column(length = 16000)

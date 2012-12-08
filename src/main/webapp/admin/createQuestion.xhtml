@@ -41,7 +41,7 @@
 		<ol>
 			<ui:repeat id="questionAnswers" var="answer" value="#{question.answers}">
 				<li>
-					<h:inputTextarea value="#{answer.content}" styleClass="input-xxlarge" rows="2" /><br />
+					<h:inputTextarea value="#{answer.content}" styleClass="input-xxlarge" rows="2" /><h:selectBooleanCheckbox value="#{answer.correct}" /><br />
 				</li>
 			</ui:repeat>
 		</ol>

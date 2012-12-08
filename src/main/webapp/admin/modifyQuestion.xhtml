@@ -16,55 +16,79 @@
 </f:metadata>
 
 <h:body>
-    <div class="container">
+	<div class="container">
 
-	<h:link value="Main page" outcome="index" />
-	<ui:param name="question" value="#{questionModifier.question}" />
+		<h:link value="Main page" outcome="index" />
+		<ui:param name="question" value="#{questionModifier.question}" />
 
-	<h:form prependId="false" id="modifyQuestionForm">
+		<div class="row-fluid">
+			<div class="span2">
+				<ul class="pager">
+					<li class="previous"><h:link
+							value="&#8592; #{msgs.previousQuestion}"
+							outcome="modifyQuestion?q=#{questionModifier.previousQuestionNumber}"
+							rendered="#{not empty questionModifier.previousQuestionNumber}" />
+					</li>
+				</ul>
+			</div>
 
-		<h:outputLabel for="selectQuestion" value="Choose question" />
-		<h:selectOneMenu id="selectQuestion"
-			value="#{questionModifier.questionId}"
-			onchange="window.location='?q=' + this.options[this.selectedIndex].value">
-			<f:selectItems value="#{questionModifier.allQuestions()}" var="currQ"
-				itemLabel="#{currQ.number} - #{currQ.summary}"
-				itemValue="#{currQ.id}" />
-		</h:selectOneMenu>
-
-
-		<h:outputLabel for="selectQuestion" value="Number" />
-		<h:inputText id="questionNumber" style="height: 25px;" styleClass="input-small" label="Number"
-			value="#{question.number}" />
-
-		<h:outputLabel for="selectQuestion" value="Summary" />
-		<h:inputText id="questionSummary" style="height: 25px;" styleClass="input-xxlarge" label="Summary"
-			value="#{question.summary}" />
-
-		<h:outputLabel for="questionContent" value="Content" />
-		<h:inputTextarea id="questionContent" label="Content" styleClass="input-xxlarge" rows="6" 
-			value="#{question.content}" />
-
-		<h:outputLabel for="questionExplanaition" value="Explanaition" />
-		<h:inputTextarea id="questionExplanaition" label="Explanaition" styleClass="input-xxlarge" rows="6" 
-			value="#{question.explanaition}" />
-
-		<h:outputLabel for="questionAnswers" value="Answers" />
-
-		<ol>
-			<ui:repeat id="questionAnswers" var="answer" value="#{question.answers}">
-				<li>
-					<h:inputTextarea value="#{answer.content}" styleClass="input-xxlarge" rows="2" /><br />
-				</li>
-			</ui:repeat>
-		</ol>
-		
-		<div>
-			<h:commandButton value="Submit" style="margin-right: 10pt;" styleClass="btn btn-primary" action="#{questionModifier.update()}" />
-			<h:commandButton value="Remove" styleClass="btn" action="#{questionModifier.delete()}" />
+			<div class="span2">
+				<ul class="pager">
+					<li class="next"><h:link value="#{msgs.nextQuestion} &#8594;"
+							outcome="modifyQuestion?q=#{questionModifier.nextQuestionNumber}"
+							rendered="#{not empty questionModifier.nextQuestionNumber}" /></li>
+				</ul>
+			</div>
 		</div>
-		
-	</h:form>
-</div>
+
+		<h:form prependId="false" id="modifyQuestionForm">
+
+			<h:outputLabel for="selectQuestion" value="Choose question" />
+
+			<h:selectOneMenu id="selectQuestion"
+				value="#{questionModifier.questionId}" style="width: 500px;"
+				onchange="window.location='?q=' + this.options[this.selectedIndex].value">
+				<f:selectItems value="#{questionModifier.allQuestions()}"
+					var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
+					itemValue="#{currQ.id}" />
+			</h:selectOneMenu>
+
+			<h:outputLabel for="selectQuestion" value="Number" />
+			<h:inputText id="questionNumber" style="height: 25px;"
+				styleClass="input-small" label="Number" value="#{question.number}" />
+
+			<h:outputLabel for="selectQuestion" value="Summary" />
+			<h:inputText id="questionSummary" style="height: 25px;"
+				styleClass="input-xxlarge" label="Summary"
+				value="#{question.summary}" />
+
+			<h:outputLabel for="questionContent" value="Content" />
+			<h:inputTextarea id="questionContent" label="Content"
+				styleClass="input-xxlarge" rows="6" value="#{question.content}" />
+
+			<h:outputLabel for="questionExplanaition" value="Explanaition" />
+			<h:inputTextarea id="questionExplanaition" label="Explanaition"
+				styleClass="input-xxlarge" rows="6" value="#{question.explanaition}" />
+
+			<h:outputLabel for="questionAnswers" value="Answers" />
+
+			<ol>
+				<ui:repeat id="questionAnswers" var="answer"
+					value="#{question.answers}">
+					<li><h:inputTextarea value="#{answer.content}"
+							styleClass="input-xxlarge" rows="2" /> <h:selectBooleanCheckbox
+							value="#{answer.correct}" /><br /></li>
+				</ui:repeat>
+			</ol>
+
+			<div>
+				<h:commandButton value="Submit" style="margin-right: 10pt;"
+					styleClass="btn btn-primary" action="#{questionModifier.update()}" />
+				<h:commandButton value="Remove" styleClass="btn"
+					action="#{questionModifier.delete()}" />
+			</div>
+
+		</h:form>
+	</div>
 </h:body>
 </html>

@@ -47,6 +47,17 @@
 	});
 
  	 </script>
+
+	<script type="text/javascript">
+      function toggle(id) {
+        var element = document.getElementById(id);
+        if(element.style.display == 'block') {
+          element.style.display = 'none';
+        } else {
+          element.style.display = 'block'
+        }
+      }
+    </script>
 </h:head>
 
 <f:metadata>
@@ -111,47 +122,49 @@
 				#{questionViewer.allQuestions().size()}</small>
 		</div>
 
-		<div class="row-fluid">
-			<div class="span12">
-				<h3>
-					<h:outputText value="#{question.number} - #{question.summary}" />
-				</h3>
+		<h:form prependId="false">
+			<div class="row-fluid">
+				<div class="span12">
+					<h3>
+						<h:outputText value="#{question.number} - #{question.summary}" />
+					</h3>
 
-				<p style="padding-top: 5pt;">
-					<h:outputText
-						value="#{questionViewer.markdownify(question.content)}"
-						escape="false" />
-				</p>
+					<p style="padding-top: 5pt;">
+						<h:outputText
+							value="#{questionViewer.markdownify(question.content)}"
+							escape="false" />
+					</p>
 
-				<ul class="nav nav-list">
-					<li class="divider"></li>
-				</ul>
+					<ul class="nav nav-list">
+						<li class="divider"></li>
+					</ul>
+					<h:panelGroup id="answers">
+						<ol style="padding-top: 10pt;">
+							<ui:repeat var="answer" value="#{question.answers}">
+								<li style="#{(questionViewer.showExplanaition ? (answer.correct ? 'color: #1DCE0A;' : 'color: #BC2F2D') : 'color: black')}"><h:outputText
+										value="#{questionViewer.markdownify(answer.content)}"
+										escape="false" /></li>
+							</ui:repeat>
+						</ol>
+					</h:panelGroup>
 
-				<ol style="padding-top: 10pt;">
-					<ui:repeat var="answer" value="#{question.answers}">
-						<li><h:outputText
-								value="#{questionViewer.markdownify(answer.content)}"
-								escape="false" /></li>
-					</ui:repeat>
-				</ol>
-
-				<h:form prependId="false">
-					<h:commandButton style="margin: 10pt 0;"
-						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Show answer'}"
+					<h:commandButton id="checkAnswerBtn" style="margin: 10pt 0;"
+						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Check answer'}"
 						styleClass="btn btn-primary">
 						<f:ajax listener="#{questionViewer.toggleExplanaition()}"
-							render="@form" />
+							render="explanaition answers checkAnswerBtn" />
 					</h:commandButton>
 
-					<h:panelGroup id="explanaition" layout="block" styleClass="well"
-						rendered="#{questionViewer.showExplanaition}">
-						<h:outputText
-							value="#{questionViewer.markdownify(question.explanaition)}"
-							escape="false" />
+					<h:panelGroup id="explanaition">
+						<h:panelGroup layout="block" styleClass="well" rendered="#{questionViewer.showExplanaition}">
+							<h:outputText
+								value="#{questionViewer.markdownify(question.explanaition)}"
+								escape="false" />
+						</h:panelGroup>
 					</h:panelGroup>
-				</h:form>
+				</div>
 			</div>
-		</div>
+		</h:form>
 
 	</div>
 </h:body>

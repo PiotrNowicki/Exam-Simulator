@@ -44,6 +44,8 @@ public class Answer implements Serializable {
      */
     @Column(length = 16000)
     private String explanation;
+    
+    private boolean isCorrect;
 
     /**
      * Constructor for the JPA purposes.
@@ -83,6 +85,14 @@ public class Answer implements Serializable {
     public void setExplanation(String explanation) {
         this.explanation = explanation;
     }
+    
+    public boolean isCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
+    }
 
     // -------------------------------------------------------------------------------||
     // Other contracts ---------------------------------------------------------------||
@@ -94,6 +104,7 @@ public class Answer implements Serializable {
 
         builder.append("id", id);
         builder.append("content", content);
+        builder.append("isCorrect", isCorrect);
 
         return builder.toString();
     }
