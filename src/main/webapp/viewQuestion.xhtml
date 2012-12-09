@@ -1,125 +1,43 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-	<title>Exam Simulator - #{questionViewer.questionNumber}
-		#{questionViewer.question.summary}</title>
-	<link rel="stylesheet" type="text/css" href="resources/main.css" />
-	<link rel="stylesheet" type="text/css"
-		href="resources/prettify/prettify.css" />
-	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
-	<link rel="shortcut icon" href="resources/favicon.ico" />
 
-	<script type="text/javascript">
+<ui:composition template="/templates/masterTemplate.xhtml">
+	<ui:define name="title">
+	Exam Simulator - #{questionViewer.questionNumber} #{questionViewer.question.summary}
+	</ui:define>
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-20849655-4']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-	<script type='text/javascript'
-		src='resources/jquery/jquery-1.8.3.min.js'></script>
-
-	<script type='text/javascript'>
-	<!-- Great, optimized jQuery automatic prettifier taken from http://tomayko.com/writings/javascript-prettification -->
-	$(document).ready(function() {
-
-	    // add prettyprint class to all <pre><code></code></pre> blocks
-	    var prettify = false;
-	    $('pre code').parent().each(function() {
-	        $(this).addClass('prettyprint');
-	        prettify = true;
-	    });
-
-	    // if code blocks were found, bring in the prettifier ...
-	    if ( prettify ) {
-	        $.getScript('resources/prettify/prettify.js', function() { prettyPrint() });
-	    }
-
-	});
-
- 	 </script>
-
-	<script type="text/javascript">
-      function toggle(id) {
-        var element = document.getElementById(id);
-        if(element.style.display == 'block') {
-          element.style.display = 'none';
-        } else {
-          element.style.display = 'block'
-        }
-      }
-    </script>
-</h:head>
-
-<f:metadata>
-	<f:viewParam name="q" value="#{questionViewer.questionNumber}" />
-	<f:event listener="#{questionViewer.loadQuestion()}"
-		type="preRenderView" />
-</f:metadata>
-
-<h:body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a>
-				<h:link outcome="index" styleClass="brand" value="Exam Simulator" />
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Questions</a></li>
-						<li><a href="http://www.piotrnowicki.com">PiotrNowicki.com</a></li>
-					</ul>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
-
-	<div class="container">
+	<ui:define name="content">
+		<f:event listener="#{questionViewer.loadQuestion()}" type="preRenderView" />
+		<f:metadata>
+			<f:viewParam name="q" value="#{questionViewer.questionNumber}" />
+		</f:metadata>
 		<ui:param name="question" value="#{questionViewer.question}" />
 
 		<div class="row-fluid">
 			<div class="span2">
 				<ul class="pager">
-					<li class="previous"><h:link
-							value="&#8592; #{msgs.previousQuestion}"
+					<li class="previous"><h:link value="#{msgs.previousQuestion}"
 							outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}"
-							rendered="#{not empty questionViewer.previousQuestionNumber}" />
-					</li>
+							rendered="#{not empty questionViewer.previousQuestionNumber}" /></li>
 				</ul>
 			</div>
 			<div class="span8" style="margin-top: 20px;">
-				<h:selectOneMenu style="width: 100%; " id="selectQuestion"
-					title="select question" value="#{questionViewer.questionNumber}"
+				<h:selectOneMenu style="width: 100%; " id="selectQuestion" title="select question" value="#{questionViewer.questionNumber}"
 					onchange="window.location='?q=' + this.options[this.selectedIndex].value">
-					<f:selectItems value="#{questionViewer.allQuestions().values()}"
-						var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
+					<f:selectItems value="#{questionViewer.allQuestions().values()}" var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
 						itemValue="#{currQ.number}" />
 				</h:selectOneMenu>
 			</div>
 			<div class="span2">
 				<ul class="pager">
-					<li class="next"><h:link value="#{msgs.nextQuestion} &#8594;"
-							outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}"
+					<li class="next"><h:link value="#{msgs.nextQuestion}" outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}"
 							rendered="#{not empty questionViewer.nextQuestionNumber}" /></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="pull-right">
-			<small>#{questionViewer.questionOrderNumber} /
-				#{questionViewer.allQuestions().size()}</small>
+			<small>#{questionViewer.questionOrderNumber} / #{questionViewer.allQuestions().size()}</small>
 		</div>
 
 		<h:form prependId="false">
@@ -130,9 +48,7 @@
 					</h3>
 
 					<p style="padding-top: 5pt;">
-						<h:outputText
-							value="#{questionViewer.markdownify(question.content)}"
-							escape="false" />
+						<h:outputText value="#{questionViewer.markdownify(question.content)}" escape="false" />
 					</p>
 
 					<ul class="nav nav-list">
@@ -141,32 +57,32 @@
 					<h:panelGroup id="answers">
 						<ol style="padding-top: 10pt;">
 							<ui:repeat var="answer" value="#{question.answers}">
-								<li style="#{(questionViewer.showExplanaition ? (answer.correct ? 'color: #1DCE0A;' : 'color: #BC2F2D') : 'color: black')}"><h:outputText
-										value="#{questionViewer.markdownify(answer.content)}"
-										escape="false" /></li>
+								<li style="#{(questionViewer.showExplanaition ? (answer.correct ? 'color: #1DCE0A;' : 'color: #BC2F2D') : 'color: black')}">
+									<div class="#{questionViewer.showExplanaition ? 'xxx' : 'answer'}">
+										<h:outputLabel onclick="$(this).toggleClass('answerSelected'); $('#hidd').val(this)"
+											value="#{questionViewer.markdownify(answer.content)}" disabled="#{questionViewer.showExplanaition}" escape="false"></h:outputLabel>
+									</div>
+								</li>
 							</ui:repeat>
 						</ol>
 					</h:panelGroup>
 
+					<h:inputHidden id="hidd" value="#{questionViewer.selectedAnswer}"></h:inputHidden>
+
 					<h:commandButton id="checkAnswerBtn" style="margin: 10pt 0;"
-						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Check answer'}"
-						styleClass="btn btn-primary">
-						<f:ajax listener="#{questionViewer.toggleExplanaition()}"
-							render="explanaition answers checkAnswerBtn" />
+						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Check answer'}" styleClass="btn btn-primary">
+						<f:ajax listener="#{questionViewer.toggleExplanaition()}" execute="hidd" render="explanaition answers checkAnswerBtn" />
 					</h:commandButton>
 
 					<h:panelGroup id="explanaition">
 						<h:panelGroup layout="block" styleClass="well" rendered="#{questionViewer.showExplanaition}">
-							<h:outputText
-								value="#{questionViewer.markdownify(question.explanaition)}"
-								escape="false" />
+							<h:outputText value="#{questionViewer.markdownify(question.explanaition)}" escape="false" />
 						</h:panelGroup>
 					</h:panelGroup>
 				</div>
 			</div>
 		</h:form>
-
-	</div>
-</h:body>
+	</ui:define>
+</ui:composition>
 
 </html>

@@ -29,6 +29,8 @@ public class QuestionViewer {
 	private String nextQuestionNumber;
 
 	private boolean showExplanaition;
+	
+	private String selectedAnswer;
 
 	public void loadQuestion() {
 		NavigableMap<String, Question> allQuestions = questionsReader
@@ -107,5 +109,14 @@ public class QuestionViewer {
 	public void setQuestionOrderNumber(Integer questionOrderNumber) {
 		this.questionOrderNumber = questionOrderNumber;
 	}
+
+    public String getSelectedAnswer() {
+        return selectedAnswer;
+    }
+
+    public void setSelectedAnswer(String selectedAnswer) {
+        System.out.println("!!!!!!!!!!!!" + selectedAnswer);
+        this.selectedAnswer = selectedAnswer;
+    }
 
 }

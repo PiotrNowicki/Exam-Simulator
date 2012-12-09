@@ -1,0 +1,72 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title><ui:insert name="title" /></title>
+	<link type="text/css" rel="stylesheet" href="resources/css/main.css" />
+	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="shortcut icon" href="resources/favicon.ico" />
+	<link type="text/css" rel="stylesheet" href="resources/prettify/prettify.css" />
+
+
+	<script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20849655-4']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+	</script>
+
+	<script type="text/javascript" src="resources/jquery/jquery-1.8.3.min.js"></script>
+
+	<script type='text/javascript'>
+	<!-- Great, optimized jQuery automatic prettifier taken from http://tomayko.com/writings/javascript-prettification -->
+	$(document).ready(function() {
+
+	    // add prettyprint class to all <pre><code></code></pre> blocks
+	    var prettify = false;
+	    $('pre code').parent().each(function() {
+	        $(this).addClass('prettyprint');
+	        prettify = true;
+	    });
+
+	    // if code blocks were found, bring in the prettifier ...
+	    if ( prettify ) {
+	        $.getScript('resources/prettify/prettify.js', function() { prettyPrint() });
+	    }
+
+	});
+
+ 	 </script>
+</h:head>
+
+<h:body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar" /> <span
+					class="icon-bar" /> <span class="icon-bar" />
+				</a> <a class="brand" href="/">Exam Simulator</a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><h:link value="Questions" outcome="viewQuestion" /></li>
+						<li><a href="http://www.piotrnowicki.com">PiotrNowicki.com</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<ui:insert name="content" />
+	</div>
+
+	<div class="footer">version #{msgs.appVersion}</div>
+
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="resources/js/bootstrap.min.js"></script>
+</h:body>
+</html>

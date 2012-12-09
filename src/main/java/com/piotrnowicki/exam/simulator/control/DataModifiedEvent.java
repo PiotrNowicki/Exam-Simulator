@@ -9,8 +9,6 @@ import com.piotrnowicki.exam.simulator.entity.Question;
  * @author Piotr Nowicki
  * 
  */
-// TODO: Make this Event more generic - the payload doesn't have to be only the Question object.
-// (https://github.com/PiotrNowicki/Exam-Simulator/issues/23)
 public class DataModifiedEvent {
 
     /**

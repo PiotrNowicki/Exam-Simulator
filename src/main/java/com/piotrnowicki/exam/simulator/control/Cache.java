@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.event.Observes;
@@ -67,7 +69,7 @@ public class Cache {
      * 
      * @return cache
      */
-    // TODO: READ Lock?
+    @Lock(LockType.READ)
     // TODO: ImmutableMap?
     public NavigableMap<String, Question> getQuestions() {
         return questions;
@@ -81,8 +83,6 @@ public class Cache {
     public void dataModified(@Observes DataModifiedEvent event) {
         log.log(Level.INFO, "Data modified. Event related with question: {0}.", event.getQuestion());
 
-        // TODO: populate only part of the cache instead of recreating it from the scratch.
-        // (https://github.com/PiotrNowicki/Exam-Simulator/issues/8)
         questions.clear();
         populate();
     }

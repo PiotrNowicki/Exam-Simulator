@@ -1,120 +1,63 @@
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-	<title>Exam Simulator</title>
-	<link rel="stylesheet" type="text/css" href="resources/main.css" />
-	<link href="resources/css/bootstrap.min.css" rel="stylesheet" />
-	<link rel="shortcut icon" href="resources/favicon.ico" />
 
-<script type="text/javascript">
+<ui:composition template="/templates/masterTemplate.xhtml">
+	<ui:define name="title">
+	Exam Simulator
+	</ui:define>
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-20849655-4']);
-  _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-</h:head>
-
-<h:body>
-
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="#">Exam Simulator</a>
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><h:link value="Questions" outcome="viewQuestion" /></li>
-						<li><a href="http://www.piotrnowicki.com">PiotrNowicki.com</a></li>
-					</ul>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-		</div>
-	</div>
-
-	<div class="container">
+	<ui:define name="content">
 		<h1 style="margin-bottom: 20pt;">
 			Exam Simulator <small>by Piotr Nowicki</small>
 		</h1>
 
 		<p>
 			This test might help to test your knowledge before taking the <a
-				href="http://education.oracle.com/pls/web_prod-plq-dad/db_pages.getpage?page_id=41&amp;p_exam_id=1Z0_894">Oracle
-				Certified Expert, JEE 6: JSP and Servlet Developer Exam</a>.
+				href="http://education.oracle.com/pls/web_prod-plq-dad/db_pages.getpage?page_id=41&amp;p_exam_id=1Z0_894">Oracle Certified
+				Expert, JEE 6: JSP and Servlet Developer Exam</a>.
 		</p>
 		<p>
-			Note that there are some well-designed and good quality SCWCD 5 mock
-			exams already available <a title="JavaRanch SCWCD Mock Tests"
-				href="http://www.coderanch.com/how-to/java/ScwcdMockTests">on
-				the net</a> . However, the below questions, focus mainly on the new
-			features which comes along with the <a
-				title="JSR-315 Java Servlet 3.0 MR"
-				href="http://jcp.org/aboutJava/communityprocess/mrel/jsr315/index.html">Servlets
-				3.0 FR specification</a>.
+			Note that there are some well-designed and good quality SCWCD 5 mock exams already available <a
+				title="JavaRanch SCWCD Mock Tests" href="http://www.coderanch.com/how-to/java/ScwcdMockTests">on the net</a> . However, the
+			below questions, focus mainly on the new features which comes along with the <a title="JSR-315 Java Servlet 3.0 MR"
+				href="http://jcp.org/aboutJava/communityprocess/mrel/jsr315/index.html">Servlets 3.0 FR specification</a>.
 		</p>
-		<p>These questions were made to help myself in preparations for
-			the new exam, so I hope that they can be used not only for testing
-			purposes, but also as a learning material.</p>
+		<p>These questions were made to help myself in preparations for the new exam, so I hope that they can be used not only for
+			testing purposes, but also as a learning material.</p>
 
 		<h3>Source Code</h3>
 		<p>
 			All of the questions' source code was uploaded at my <a
-				href="https://github.com/PiotrNowicki/OCE-JSP-and-Servlets-Developer-Mock-Exam">GitHub
-				repository</a>, so feel free to check it. In each directory you’ll find
-			<em>webapp</em> subdirectory which consists of ready-to-deploy
-			exemplary code. If the question was related to the JAR files (i.e.
-			web fragment questions), these will be located in the question’s main
-			directory.
+				href="https://github.com/PiotrNowicki/OCE-JSP-and-Servlets-Developer-Mock-Exam">GitHub repository</a>, so feel free to check
+			it. In each directory you’ll find <em>webapp</em> subdirectory which consists of ready-to-deploy exemplary code. If the
+			question was related to the JAR files (i.e. web fragment questions), these will be located in the question’s main directory.
 		</p>
 
 		<h3>Reference</h3>
 		<p>
-			Most of the examples were tested on <a target="_blank"
-				href="http://tomcat.apache.org/download-70.cgi"
-				title="Apache Tomcat 7 website">Apache Tomcat 7</a> and some were
-			tested on <a target="_blank"
-				href="http://glassfish.java.net/public/downloadsindex.html#top"
-				title="GlassFish 3.1 website">Glassfish v.3.1</a> and <a
-				target="_blank" href="http://www.caucho.com/download/"
-				title="Resin website">Resin 4.0.16</a>.
+			Most of the examples were tested on <a target="_blank" href="http://tomcat.apache.org/download-70.cgi"
+				title="Apache Tomcat 7 website">Apache Tomcat 7</a> and some were tested on <a target="_blank"
+				href="http://glassfish.java.net/public/downloadsindex.html#top" title="GlassFish 3.1 website">Glassfish v.3.1</a> and <a
+				target="_blank" href="http://www.caucho.com/download/" title="Resin website">Resin 4.0.16</a>.
 		</p>
 		<p>
-			In the answers, the "Reference" section points relevant parts of the
-			<a target="_blank"
-				href="http://jcp.org/aboutJava/communityprocess/mrel/jsr315/index.html">Servlets
-				3.0 Final Release specification</a> which should be helpful to
-			understand the particular topic.
+			In the answers, the "Reference" section points relevant parts of the <a target="_blank"
+				href="http://jcp.org/aboutJava/communityprocess/mrel/jsr315/index.html">Servlets 3.0 Final Release specification</a> which
+			should be helpful to understand the particular topic.
 		</p>
 
 		<h3>Feedback</h3>
 		<p>
-			If you can, after taking this test, please leave a comment about what
-			do you think about the questions and/or click the <Q>like button</Q>
-			if you liked it. It would be definitely nice to know that additional
-			work put into this mock exam preparation was worth it! ;-)
+			If you can, after taking this test, please leave a comment about what do you think about the questions and/or click the <Q>like
+				button</Q> if you liked it. It would be definitely nice to know that additional work put into this mock exam preparation was worth
+			it! ;-)
 		</p>
 		<p>Have fun and good luck!</p>
 
 		<p style="text-align: center;">
-			<h:link outcome="viewQuestion" value="View questions"
-				styleClass="btn btn-large btn-primary" />
+			<h:link outcome="viewQuestion" value="View questions" styleClass="btn btn-large btn-primary" />
 		</p>
-	</div>
-	
-	<div class="footer">version #{msgs.appVersion}</div>
-
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-</h:body>
+	</ui:define>
+</ui:composition>
 </html>
