@@ -21,18 +21,3 @@ div.answer div.answerContent {
 	display: inline-block;
 }
 
-.answer {
-	color: inherit;
-	text-decoration: none;
-	display: block;
-}
-
-.answer:hover {
-	background-color: #BCDAFF;	
-	color: black;
-	text-decoration: none;
-}
-
-.answer .answerSelected {
-	background-color: #BCDAFF;	
-}

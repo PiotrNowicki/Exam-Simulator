@@ -1,18 +1,17 @@
 package com.piotrnowicki.exam.simulator.web;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
+import com.piotrnowicki.exam.simulator.boundary.QuestionsManager;
+import com.piotrnowicki.exam.simulator.entity.Answer;
+import com.piotrnowicki.exam.simulator.entity.Question;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
-
-import com.piotrnowicki.exam.simulator.boundary.QuestionsManager;
-import com.piotrnowicki.exam.simulator.entity.Answer;
-import com.piotrnowicki.exam.simulator.entity.Question;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
 
 @ManagedBean
 @ViewScoped
@@ -27,11 +26,11 @@ public class QuestionModifier {
     @Inject
     transient Logger log;
 
-    private static final Integer NUMBER_OF_QUESTIONS = 8;
+    private static final Integer NUMBER_OF_ANSWERS = 8;
 
     private Question question;
 
-    private String questionId;
+    private String questionId = "1";
 
     private String previousQuestionNumber;
 
@@ -42,7 +41,7 @@ public class QuestionModifier {
     }
 
     public void loadAnswers() {
-        while (question.getAnswers().size() < NUMBER_OF_QUESTIONS) {
+        while (question.getAnswers().size() < NUMBER_OF_ANSWERS) {
             question.addAnswers(new Answer());
         }
     }
@@ -52,7 +51,7 @@ public class QuestionModifier {
         if (!ctx.isPostback()) {
             question = new Question();
 
-            for (int i = 0; i < NUMBER_OF_QUESTIONS; i++) {
+            for (int i = 0; i < NUMBER_OF_ANSWERS; i++) {
                 question.addAnswers(new Answer());
             }
         }

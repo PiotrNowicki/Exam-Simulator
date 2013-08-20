@@ -72,7 +72,7 @@
 
 			<h:outputLabel for="questionAnswers" value="Answers" />
 
-			<ol>
+			<ol id="answers">
 				<ui:repeat id="questionAnswers" var="answer"
 					value="#{question.answers}">
 					<li><h:inputTextarea value="#{answer.content}"

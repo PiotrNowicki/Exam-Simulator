@@ -1,15 +1,14 @@
 package com.piotrnowicki.exam.simulator.web;
 
-import java.util.Map;
-import java.util.NavigableMap;
+import com.github.rjeschke.txtmark.Processor;
+import com.piotrnowicki.exam.simulator.boundary.QuestionsReader;
+import com.piotrnowicki.exam.simulator.entity.Question;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-
-import com.github.rjeschke.txtmark.Processor;
-import com.piotrnowicki.exam.simulator.boundary.QuestionsReader;
-import com.piotrnowicki.exam.simulator.entity.Question;
+import java.util.Map;
+import java.util.NavigableMap;
 
 @ManagedBean
 @ViewScoped
@@ -115,7 +114,6 @@ public class QuestionViewer {
     }
 
     public void setSelectedAnswer(String selectedAnswer) {
-        System.out.println("!!!!!!!!!!!!" + selectedAnswer);
         this.selectedAnswer = selectedAnswer;
     }
 

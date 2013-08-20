@@ -1,15 +1,14 @@
 package com.piotrnowicki.exam.simulator.entity;
 
-import java.io.Serializable;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.io.Serializable;
 
 /**
  * Single Answer to the given {@link Question}.
@@ -44,7 +43,8 @@ public class Answer implements Serializable {
      */
     @Column(length = 16000)
     private String explanation;
-    
+
+    @Column(name = "isCorrect")
     private boolean isCorrect;
 
     /**

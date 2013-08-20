@@ -1,88 +1,89 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ui:composition template="/templates/masterTemplate.xhtml">
-	<ui:define name="title">
-	Exam Simulator - #{questionViewer.questionNumber} #{questionViewer.question.summary}
-	</ui:define>
+    <ui:define name="title">
+        Exam Simulator - #{questionViewer.questionNumber} #{questionViewer.question.summary}
+    </ui:define>
 
-	<ui:define name="content">
-		<f:event listener="#{questionViewer.loadQuestion()}" type="preRenderView" />
-		<f:metadata>
-			<f:viewParam name="q" value="#{questionViewer.questionNumber}" />
-		</f:metadata>
-		<ui:param name="question" value="#{questionViewer.question}" />
+    <ui:define name="content">
+        <f:event listener="#{questionViewer.loadQuestion()}" type="preRenderView"/>
+        <f:metadata>
+            <f:viewParam name="q" value="#{questionViewer.questionNumber}"/>
+        </f:metadata>
+        <ui:param name="question" value="#{questionViewer.question}"/>
 
-		<div class="row-fluid">
-			<div class="span2">
-				<ul class="pager">
-					<li class="previous"><h:link value="#{msgs.previousQuestion}"
-							outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}"
-							rendered="#{not empty questionViewer.previousQuestionNumber}" /></li>
-				</ul>
-			</div>
-			<div class="span8" style="margin-top: 20px;">
-				<h:selectOneMenu style="width: 100%; " id="selectQuestion" title="select question" value="#{questionViewer.questionNumber}"
-					onchange="window.location='?q=' + this.options[this.selectedIndex].value">
-					<f:selectItems value="#{questionViewer.allQuestions().values()}" var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
-						itemValue="#{currQ.number}" />
-				</h:selectOneMenu>
-			</div>
-			<div class="span2">
-				<ul class="pager">
-					<li class="next"><h:link value="#{msgs.nextQuestion}" outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}"
-							rendered="#{not empty questionViewer.nextQuestionNumber}" /></li>
-				</ul>
-			</div>
-		</div>
+        <div class="row-fluid">
+            <div class="span2">
+                <ul class="pager">
+                    <li class="previous"><h:link value="#{msgs.previousQuestion}"
+                                                 outcome="viewQuestion?q=#{questionViewer.previousQuestionNumber}"
+                                                 rendered="#{not empty questionViewer.previousQuestionNumber}"/></li>
+                </ul>
+            </div>
+            <div class="span8" style="margin-top: 20px;">
+                <h:selectOneMenu style="width: 100%; " id="selectQuestion" title="select question" value="#{questionViewer.questionNumber}"
+                                 onchange="window.location='?q=' + this.options[this.selectedIndex].value">
+                    <f:selectItems value="#{questionViewer.allQuestions().values()}" var="currQ" itemLabel="#{currQ.number} - #{currQ.summary}"
+                                   itemValue="#{currQ.number}"/>
+                </h:selectOneMenu>
+            </div>
+            <div class="span2">
+                <ul class="pager">
+                    <li class="next"><h:link value="#{msgs.nextQuestion}" outcome="viewQuestion?q=#{questionViewer.nextQuestionNumber}"
+                                             rendered="#{not empty questionViewer.nextQuestionNumber}"/></li>
+                </ul>
+            </div>
+        </div>
 
-		<div class="pull-right">
-			<small>#{questionViewer.questionOrderNumber} / #{questionViewer.allQuestions().size()}</small>
-		</div>
+        <div class="pull-right">
+            <small>#{questionViewer.questionOrderNumber} / #{questionViewer.allQuestions().size()}</small>
+        </div>
 
-		<h:form prependId="false">
-			<div class="row-fluid">
-				<div class="span12">
-					<h3>
-						<h:outputText value="#{question.number} - #{question.summary}" />
-					</h3>
 
-					<p style="padding-top: 5pt;">
-						<h:outputText value="#{questionViewer.markdownify(question.content)}" escape="false" />
-					</p>
+        <div class="row-fluid">
+            <div class="span12">
+                <h3>
+                    <h:outputText value="#{question.number} - #{question.summary}"/>
+                </h3>
 
-					<ul class="nav nav-list">
-						<li class="divider"></li>
-					</ul>
-					<h:panelGroup id="answers">
-						<ol style="padding-top: 10pt;">
-							<ui:repeat var="answer" value="#{question.answers}">
-								<li style="#{(questionViewer.showExplanaition ? (answer.correct ? 'color: #1DCE0A;' : 'color: #BC2F2D') : 'color: black')}">
-									<div class="#{questionViewer.showExplanaition ? 'xxx' : 'answer'}">
-										<h:outputLabel onclick="$(this).toggleClass('answerSelected'); $('#hidd').val(this)"
-											value="#{questionViewer.markdownify(answer.content)}" disabled="#{questionViewer.showExplanaition}" escape="false"></h:outputLabel>
-									</div>
-								</li>
-							</ui:repeat>
-						</ol>
-					</h:panelGroup>
+                <p style="padding-top: 5pt;">
+                    <h:outputText value="#{questionViewer.markdownify(question.content)}" escape="false"/>
+                </p>
 
-					<h:inputHidden id="hidd" value="#{questionViewer.selectedAnswer}"></h:inputHidden>
+                <ul class="nav nav-list">
+                    <li class="divider"></li>
+                </ul>
 
-					<h:commandButton id="checkAnswerBtn" style="margin: 10pt 0;"
-						value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Check answer'}" styleClass="btn btn-primary">
-						<f:ajax listener="#{questionViewer.toggleExplanaition()}" execute="hidd" render="explanaition answers checkAnswerBtn" />
-					</h:commandButton>
+                <h:form prependId="false">
+                    <h:panelGroup id="answers">
+                        <ol style="padding-top: 10pt;">
+                            <ui:repeat var="answer" value="#{question.answers}">
+                                <li style="#{(questionViewer.showExplanaition ? (answer.correct ? 'color: #1DCE0A;' : 'color: #BC2F2D') : 'color: black')}">
+                                    <div class="#{questionViewer.showExplanaition ? 'xxx' : 'answer'}">
+                                        <h:outputLabel value="#{questionViewer.markdownify(answer.content)}" disabled="#{questionViewer.showExplanaition}"
+                                                       escape="false"></h:outputLabel>
+                                    </div>
+                                </li>
+                            </ui:repeat>
+                        </ol>
+                    </h:panelGroup>
 
-					<h:panelGroup id="explanaition">
-						<h:panelGroup layout="block" styleClass="well" rendered="#{questionViewer.showExplanaition}">
-							<h:outputText value="#{questionViewer.markdownify(question.explanaition)}" escape="false" />
-						</h:panelGroup>
-					</h:panelGroup>
-				</div>
-			</div>
-		</h:form>
-	</ui:define>
+                    <h:commandButton id="checkAnswerBtn" style="margin: 10pt 0;"
+                                     value="#{questionViewer.showExplanaition ? 'Hide answer' : 'Check answer'}" styleClass="btn btn-primary">
+                        <f:ajax listener="#{questionViewer.toggleExplanaition()}" render="explanaition answers checkAnswerBtn"/>
+                    </h:commandButton>
+
+                    <h:panelGroup id="explanaition">
+                        <h:panelGroup layout="block" styleClass="well" rendered="#{questionViewer.showExplanaition}">
+                            <h:outputText value="#{questionViewer.markdownify(question.explanaition)}" escape="false"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                </h:form>
+            </div>
+        </div>
+
+    </ui:define>
 </ui:composition>
 
 </html>
